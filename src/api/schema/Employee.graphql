@@ -1,0 +1,25 @@
+fragment employee on Employee {
+  id
+  name
+  surName
+  birth
+  skill
+}
+
+query GetEmployee($id: ID!) {
+  employee(id: $id) {
+    ...employee
+  }
+}
+
+query GetEmployees {
+  employees {
+    ...employee
+  }
+}
+
+mutation CreateEmployee($input: UserCreateInput!) {
+  createEmployee(input: $input) {
+    ...employee
+  }
+}
