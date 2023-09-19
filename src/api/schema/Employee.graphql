@@ -18,7 +18,7 @@ query GetEmployees {
   }
 }
 
-mutation CreateEmployee($input: UserCreateInput!) {
+mutation CreateEmployee($input: EmployeeCreateInput!) {
   createEmployee(input: $input) {
     ...employee
   }

@@ -4,10 +4,10 @@ import * as ReactDOM from "react-dom";
 import { createBrowserRouter, json, RouterProvider } from "react-router-dom";
 import Layout from "./Layout";
 import { Client, createRequest, Provider, fetchExchange, gql } from "urql";
-import { GetUserDocument } from "../../api/gql/graphql";
+// import { GetUserDocument } from "../../api/gql/graphql";
 import Root from "./Root";
 
-const u = GetUserDocument;
+// const u = GetUserDocument;
 
 const router = createBrowserRouter([
   {

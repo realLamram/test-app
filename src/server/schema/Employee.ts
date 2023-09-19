@@ -48,7 +48,7 @@ const EmployeeCreateInput = builder.inputType("EmployeeCreateInput", {
   }),
 });
 
-builder.mutationField("createUser", (t) =>
+builder.mutationField("createEmployee", (t) =>
   t.prismaField({
     type: Employee,
     args: {
