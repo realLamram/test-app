@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./client/App/App";
 import { Provider, cacheExchange, createClient, fetchExchange, mapExchange } from "urql";
+import Router from "./client/App/Router/Router";
 // import "./utils/i18n";
 
 const client = createClient({
@@ -21,7 +22,7 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider value={client}>
-      <App />
+      <Router />
     </Provider>
   </React.StrictMode>
 );

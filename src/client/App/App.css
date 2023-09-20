@@ -1,0 +1,57 @@
+a:link {
+  text-decoration: none;
+  padding: 3px 10px;
+  border-radius: 10px;
+  color: #303030;
+  font-size: 1.2rem;
+}
+
+a:hover {
+  background-color: #f8f8f8;
+}
+
+p {
+  font-size: 1rem;
+}
+
+/* Scrollbar ----------------- */
+::-webkit-scrollbar {
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+/* total width */
+::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0);
+  width: 8px;
+  height: 8px;
+  z-index: 999999;
+}
+
+/* background of the scrollbar except button or resizer */
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* scrollbar itself */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 16px;
+  border: 0px solid #fff;
+}
+
+/* set button(top and bottom of the scrollbar) */
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* scrollbar when element is hovered */
+::-webkit-scrollbar-thumb {
+  background-color: #a0a0a5;
+  border: 1px solid #fff;
+}
+
+/* scrollbar when scrollbar is hovered */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #808080;
+}
