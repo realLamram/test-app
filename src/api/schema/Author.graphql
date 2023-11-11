@@ -1,0 +1,32 @@
+fragment author on Author {
+  id
+  name
+  surName
+}
+
+query Author($id: ID!) {
+  author(id: $id) {
+    ...author
+    books {
+      ...book
+    }
+  }
+}
+
+query Authors {
+  authors {
+    ...author
+  }
+}
+
+mutation CreateAuthor($input: AuthorInput!) {
+  createAuthor(input: $input) {
+    ...author
+  }
+}
+
+mutation UpdateAuthor($id: ID!, $input: AuthorInput!) {
+  updateAuthor(id: $id, input: $input) {
+    ...author
+  }
+}

@@ -1,0 +1,39 @@
+fragment astronaut on Astronaut {
+  id
+  name
+  surName
+  birth
+  skill
+  hair
+  eyes
+}
+
+query Astronaut($id: ID!) {
+  astronaut(id: $id) {
+    ...astronaut
+  }
+}
+
+query Astronauts {
+  astronauts {
+    ...astronaut
+  }
+}
+
+mutation CreateAstronaut($input: AstronautInput!) {
+  createAstronaut(input: $input) {
+    ...astronaut
+  }
+}
+
+mutation UpdateAstronaut($id: ID!, $input: AstronautInput!) {
+  updateAstronaut(id: $id, input: $input) {
+    ...astronaut
+  }
+}
+
+mutation DestroyAstronaut($id: ID!) {
+  destroyAstronaut(id: $id) {
+    ...astronaut
+  }
+}

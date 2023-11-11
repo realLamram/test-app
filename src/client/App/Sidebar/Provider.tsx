@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactElement, useEffect, useState } from "react";
-import useBreakPoints from "./../hooks/useBreakPoints";
+import { useBreakPoints } from "./../hooks";
 import SidebarContext, { DrawerVariant } from "./Context";
 
 export type SidebarProviderProps = PropsWithChildren<any>;

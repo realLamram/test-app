@@ -1,8 +1,8 @@
 import { Box, CssBaseline } from "@mui/material";
 import ThemeProvider from "../theme/ThemeProvider";
-import "./App.css";
 import Layout from "./Layout";
 import RouterProvider from "./Router/Provider";
+import UserProvider from "../context/UserProvider";
 
 function App() {
   return (
@@ -10,7 +10,9 @@ function App() {
       <CssBaseline />
       <Box display="flex">
         <RouterProvider>
-          <Layout />
+          <UserProvider>
+            <Layout />
+          </UserProvider>
         </RouterProvider>
       </Box>
     </ThemeProvider>

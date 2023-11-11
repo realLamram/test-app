@@ -8,6 +8,7 @@ export const Employee = builder.prismaObject("Employee", {
     surName: t.exposeString("surName"),
     birth: t.expose("birth", { type: "Date" }),
     skill: t.exposeString("skill", { nullable: true }),
+    active: t.exposeBoolean("active", { nullable: true }),
   }),
 });
 
@@ -31,15 +32,23 @@ builder.queryField("employees", (t) => {
   return t.prismaField({
     type: [Employee],
     nullable: true,
-    resolve: async (query) => {
-      return clientPrisma.employee.findMany({
+    args: {
+      // orderBy: t.arg({ type: [BudgetProposalOrderByInput] }),
+      search: t.arg.string(),
+      skip: t.arg.int(),
+      take: t.arg.int(),
+      // where: t.arg({ type: BudgetProposalWhereInput }),
+    },
+    resolve: async (query, _, {}: any) => {
+      return await clientPrisma.employee.findMany({
         ...query,
+        where: { active: true },
       });
     },
   });
 });
 
-const EmployeeCreateInput = builder.inputType("EmployeeCreateInput", {
+const EmployeeInput = builder.inputType("EmployeeInput", {
   fields: (t) => ({
     name: t.string({ required: true }),
     surName: t.string({ required: true }),
@@ -52,14 +61,51 @@ builder.mutationField("createEmployee", (t) =>
   t.prismaField({
     type: Employee,
     args: {
-      input: t.arg({ type: EmployeeCreateInput, required: true }),
+      input: t.arg({ type: EmployeeInput, required: true }),
     },
 
     resolve: async (query, _, { input }) => {
-      const data = {
-        ...input,
-      };
-      const user = await clientPrisma.employee.create({ ...query, data });
+      const user = await clientPrisma.employee.create({
+        ...query,
+        data: { ...input, active: true },
+      });
+      return user;
+    },
+  })
+);
+
+builder.mutationField("updateEmployee", (t) =>
+  t.prismaField({
+    type: Employee,
+    args: {
+      id: t.arg.id({ required: true }),
+      input: t.arg({ type: EmployeeInput, required: true }),
+    },
+
+    resolve: async (query, _, { id, input }) => {
+      const user = await clientPrisma.employee.update({
+        ...query,
+        data: input,
+        where: { id: id ? String(id) : "" },
+      });
+      return user;
+    },
+  })
+);
+
+builder.mutationField("destroyEmployee", (t) =>
+  t.prismaField({
+    type: Employee,
+    args: {
+      id: t.arg.id({ required: true }),
+    },
+
+    resolve: async (query, _, { id }) => {
+      const user = await clientPrisma.employee.update({
+        ...query,
+        data: { active: false },
+        where: { id: id ? String(id) : "" },
+      });
       return user;
     },
   })

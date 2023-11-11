@@ -6,20 +6,32 @@ fragment employee on Employee {
   skill
 }
 
-query GetEmployee($id: ID!) {
+query Employee($id: ID!) {
   employee(id: $id) {
     ...employee
   }
 }
 
-query GetEmployees {
+query Employees {
   employees {
     ...employee
   }
 }
 
-mutation CreateEmployee($input: EmployeeCreateInput!) {
+mutation CreateEmployee($input: EmployeeInput!) {
   createEmployee(input: $input) {
+    ...employee
+  }
+}
+
+mutation UpdateEmployee($id: ID!, $input: EmployeeInput!) {
+  updateEmployee(id: $id, input: $input) {
+    ...employee
+  }
+}
+
+mutation DestroyEmployee($id: ID!) {
+  destroyEmployee(id: $id) {
     ...employee
   }
 }

@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./client/App/App";
 import { Provider, cacheExchange, createClient, fetchExchange, mapExchange } from "urql";
 import Router from "./client/App/Router/Router";
-// import "./utils/i18n";
+import "./i18n";
+
+export const url = "http://localhost:3000";
 
 const client = createClient({
   url: "http://localhost:3101/api",

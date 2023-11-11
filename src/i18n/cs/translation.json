@@ -1,0 +1,38 @@
+{
+    "Modules": "Moduly",
+
+    "create": "Vytvořit",
+    "delete": "Odstranit",
+    "destroy": "Stornovat",
+    "edit": "Upravit",
+    "new": "Přidat",
+    "submit": "Odeslat",
+    "update": "Uložit",
+    "save": "Uložit",
+    "uploadImage": "Nahrát obrázek",
+
+    "cancel": "Zrušit",
+    "confirm": "Potvrdit",
+
+    "requiredField": "Povinný údaj",
+    
+    "Employees": "Zaměstnanci",
+    "Astronauts": "Astronauti",
+    "Books": "Knihy",
+    "Authors": "Autoři",
+    "Author": "Autor",
+    
+    "name": "Jméno",
+    "surName": "Příjmení",
+    "skill" : "Dovednost",
+    "birth" : "Narozen/a",
+    "hair" : "Vlasy",
+    "eyes" : "Oči",
+    "title": "Titul",
+    "released": "Vydáno",
+    "author": "Autor",
+    "price": "Cena",
+
+    "dialog_delete": "Opravdu chcete {{- data}} smazat?",
+    "tooBig": "Maximální povolená velikost souboru je 500 kB!"
+}

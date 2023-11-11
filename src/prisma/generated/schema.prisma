@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+generator pothos {
+  provider     = "prisma-pothos-types"
+  clientOutput = "../prisma/generated"
+  output       = "../server/generated.ts"
+}
+
+enum BookEntryType {
+  cover
+  back
+}
+
+model Employee {
+  id        String   @id @default(uuid())
+  name      String
+  surName   String
+  birth     DateTime @db.Date
+  skill     String?
+  active    Boolean? @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Astronaut {
+  id        String   @id @default(uuid())
+  name      String
+  surName   String
+  birth     DateTime @db.Date
+  skill     String
+  hair      String?
+  eyes      String?
+  active    Boolean? @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Author {
+  id      String @id @default(uuid())
+  name    String
+  surName String
+  books   Book[]
+}
+
+model Book {
+  id        String   @id @default(uuid())
+  title     String
+  released  Int
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // fileId      String
+
+  author Author  @relation(fields: [authorId], references: [id])
+  // file   Entry  @relation(fields: [fileId], references: [id])
+  files  Entry[]
+}
+
+model Entry {
+  id String @id @default(uuid())
+
+  createdAt DateTime      @default(now())
+  name      String        @db.VarChar(255)
+  path      String        @db.VarChar(255)
+  type      BookEntryType
+  extension String        @db.VarChar(255)
+  size      BigInt
+  updatedAt DateTime      @updatedAt
+  bookId    String
+
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}

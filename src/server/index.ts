@@ -5,6 +5,7 @@ import { ENDPOINT as graphqlEndpoint } from "../api";
 import { PUBLIC_DIR, SERVER_PORT } from "../env";
 import { builder } from "./builder";
 import "./schema";
+import { graphqlUploadExpress } from "graphql-upload-minimal";
 
 const app = express();
 
@@ -18,7 +19,7 @@ const yoga = createYoga({
   schema: schema,
 });
 
-app.use(graphqlEndpoint, yoga);
+app.use(graphqlEndpoint, graphqlUploadExpress({ maxFileSize: 512000, maxFiles: 1 }), yoga);
 
 app.use("*", (_, res) => {
   res.sendFile(resolve(join(PUBLIC_DIR, "index.html")));

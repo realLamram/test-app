@@ -1,10 +1,9 @@
 import { useContext, useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
 import RouterContext from "./Context";
-import { Loader } from "./routes";
+import { useLoaderData } from "../hooks";
 
 export default function useRouterResource() {
-  const loader = useLoaderData() as Loader;
+  const loader = useLoaderData();
   const { resource, action, params } = loader;
   const { setResource, setAction, setParams } = useContext(RouterContext);
   useEffect(() => {

@@ -1,3 +1,6 @@
+import CloseIcon from "@mui/icons-material/Close";
+import GroupIcon from "@mui/icons-material/Group";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import {
   Drawer,
   List,
@@ -8,36 +11,42 @@ import {
   Toolbar,
   useTheme,
 } from "@mui/material";
-import { ReactElement, useCallback, useContext, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-
-import AppsIcon from "@mui/icons-material/Apps";
-import CloseIcon from "@mui/icons-material/Close";
+import { grey } from "@mui/material/colors";
+import { ReactElement, ReactNode, useCallback, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { translate } from "../../../i18n/utils";
+import { Link } from "../../ui/Link";
+import { Resource } from "../Router/utils";
 import SidebarContext from "./Context";
 import SidebarToggle from "./SidebarToggle";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 type LinkProps = {
-  text: string;
+  title: string;
   path: string;
-  icon: any;
+  icon: ReactNode;
 };
 
-const links = [{ text: "Employees", path: "employees", icon: <AppsIcon /> }];
+const links: LinkProps[] = [
+  { title: "Books", path: Resource.BOOKS, icon: <AutoStoriesIcon /> },
+  { title: "Astronauts", path: Resource.ASTRONAUTS, icon: <RocketLaunchIcon /> },
+  { title: "Employees", path: Resource.EMPLOYEES, icon: <GroupIcon /> },
+];
 
 export default function Sidebar(): ReactElement {
   const { pathname } = useLocation();
   const { open, setOpen, variant } = useContext(SidebarContext);
   const theme = useTheme();
 
-  const selected = (path: string): boolean => (pathname.startsWith(path) ? true : false);
+  const selected = (path: string): boolean => (pathname.startsWith(`/${path}`) ? true : false);
 
   const DrawerItem = (props: LinkProps): ReactElement => {
-    const { path, text, icon } = props;
+    const { path, title, icon } = props;
 
     return (
-      <NavLink
+      <Link
         key={path}
-        to={path}
+        url={path}
         style={{ padding: 0, marginLeft: "5px", marginRight: "5px", display: "flex" }}
       >
         <ListItem
@@ -45,6 +54,7 @@ export default function Sidebar(): ReactElement {
             height: "50px",
             backgroundColor: selected(path) ? theme.palette.action.selected : "transparent",
             borderRadius: "4px",
+            ":hover": { backgroundColor: grey[100] },
           }}
           disablePadding
         >
@@ -52,17 +62,17 @@ export default function Sidebar(): ReactElement {
             sx={{ borderRadius: "4px", "&:hover": { backgroundColor: "transparent" } }}
           >
             <ListItemIcon>{icon}</ListItemIcon>
-            {open && <ListItemText primary={text} />}
+            {open && <ListItemText primary={title ? translate(title) : ""} />}
           </ListItemButton>
         </ListItem>
-      </NavLink>
+      </Link>
     );
   };
 
   const renderDrawerItems = useCallback(
     (): ReactElement[] =>
       links.map((link: LinkProps) => (
-        <DrawerItem key={link.path} path={link.path} text={link.text} icon={link.icon} />
+        <DrawerItem key={link.path} path={link.path} title={link.title} icon={link.icon} />
       )),
     [open, pathname]
   );

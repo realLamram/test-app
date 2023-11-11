@@ -2,7 +2,7 @@ import { Box, Container } from "@mui/material";
 import { ReactElement, useContext } from "react";
 import { Outlet as ReactOutlet } from "react-router-dom";
 import SidebarContext from "./Sidebar/Context";
-import useBreakPoints from "./hooks/useBreakPoints";
+import { useBreakPoints } from "./hooks";
 
 export default function Outlet(): ReactElement {
   const { downMD } = useBreakPoints();

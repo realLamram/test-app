@@ -1,0 +1,51 @@
+fragment entry on Entry {
+  id
+  name
+  size
+  extension
+  path
+  type
+  size
+}
+
+fragment book on Book {
+  id
+  title
+  released
+  author {
+    ...author
+  }
+  files {
+    ...entry
+  }
+}
+
+query Book($id: ID!) {
+  book(id: $id) {
+    ...book
+  }
+}
+
+query Books {
+  books {
+    ...book
+  }
+}
+
+mutation CreateBook($input: BookCreateInput!, $file: Upload!) {
+  createBook(input: $input, file: $file) {
+    ...book
+  }
+}
+
+mutation UpdateBook($id: ID!, $input: BookUpdateInput!, $file: Upload) {
+  updateBook(id: $id, input: $input, file: $file) {
+    ...book
+  }
+}
+
+mutation DeleteBook($id: ID!, $path: String) {
+  deleteBook(id: $id, path: $path) {
+    ...book
+  }
+}
