@@ -12,6 +12,8 @@
     "migrate": "npx prisma migrate dev --name test2 --schema ./src/prisma/schema.prisma",
     "generate": "npx prisma generate --schema ./src/prisma/schema.prisma",
     "codegen": "graphql-codegen --config codegen.ts --debug",
+    "codegen:watch": "graphql-codegen --config codegen.ts --watch",
+    "serveDb": "npx prisma studio --schema ./src/prisma/schema.prisma",
     "pushDb": " npx prisma db push --schema ./src/prisma/schema.prisma",
     "srv": "nodemon --exec npx --esm ts-node ./src/server/index.ts",
     "startDev": "clear && concurrently \"npm run startD\" \"npm run srv\""
@@ -42,7 +44,8 @@
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "tmp-promise": "^3.0.3",
-    "urql": "^4.0.5"
+    "urql": "^4.0.5",
+    "yup": "^1.3.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

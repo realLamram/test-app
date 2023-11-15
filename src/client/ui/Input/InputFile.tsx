@@ -3,10 +3,10 @@ import { ReactElement, useState } from "react";
 import { useValidation } from "../../validation";
 import { translate } from "../../../i18n/utils";
 
-type InputFileProps = ButtonProps & { name: string; error?: boolean };
+type InputFileProps = ButtonProps & { name: string; error?: boolean; helperText?: string };
 
 export default function InputFile(props: InputFileProps): ReactElement {
-  const { error } = props;
+  const { error, helperText } = props;
   const [tooBig, setTooBig] = useState<boolean>(false);
 
   const { setInput } = useValidation();
@@ -29,8 +29,7 @@ export default function InputFile(props: InputFileProps): ReactElement {
         {translate("uploadImage")}
         <input accept="image/png, image/jpeg" type="file" hidden onChange={handleChange} />
       </Button>
-      {tooBig && <FormHelperText sx={{ color: "red" }}>{translate("tooBig")}</FormHelperText>}
-      {error && <FormHelperText sx={{ color: "red" }}>{translate("requiredField")}</FormHelperText>}
+      {helperText && <FormHelperText sx={{ color: "red" }}>{translate(helperText)}</FormHelperText>}
     </Box>
   );
 }

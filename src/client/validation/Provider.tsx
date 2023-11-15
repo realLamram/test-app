@@ -1,8 +1,8 @@
 import { PropsWithChildren, ReactElement } from "react";
 import useContextComponents from "../context/useComponent";
-import { FieldNames } from "../modules/Employees/Form";
 import { Fields } from "../ui/utils";
 import ValidationContext from "./Context";
+import yupValidation from "./yupValidation";
 
 export type ValidationProviderProps = PropsWithChildren<any>;
 
@@ -10,23 +10,28 @@ export default function ValidationProvider({ children }: ValidationProviderProps
   const { components, setComponents } = useContextComponents();
 
   const setInput = ({ name, value }: { name: string; value: any }) => {
-    setComponents({ ...components, [name]: { ...components[name], value, error: false } });
+    setComponents({
+      ...components,
+      [name]: { ...components[name], value, error: false, helperText: undefined },
+    });
   };
 
-  const isValid = (fields?: Fields): boolean => {
-    let newComponents: Fields = {};
-    let isValid = true;
+  const isValid = async (
+    schema?: any,
+    input?: { [key: string]: any },
+    fields?: Fields
+  ): Promise<boolean> => {
+    let newComponents: Fields = fields || components;
 
-    for (const name in fields ?? components) {
-      const req = components[name].required;
-      const val = components[name].value;
-      if (req && (val === "" || !val)) {
-        newComponents = { ...newComponents, [name]: { ...components[name], error: true } };
-        isValid = false;
-      } else {
-        newComponents = { ...newComponents, [name]: { ...components[name], error: false } };
-      }
-    }
+    const { isValid, errorPaths, errorMessages } = await yupValidation(schema, input);
+
+    errorPaths?.forEach((name: string, idx: number) => {
+      newComponents = {
+        ...newComponents,
+        [name]: { ...components[name], error: true, helperText: errorMessages?.[idx] },
+      };
+    });
+
     setComponents(newComponents);
     return isValid;
   };

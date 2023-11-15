@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 import { url } from "../../..";
 import { BookDocument, UpdateBookDocument } from "../../../api/gql/graphql";
 import { translate } from "../../../i18n/utils";
+import { bookUpdate } from "../../../validation/schema/Books";
 import { useBreakPoints, useData, useMutation } from "../../App/hooks";
 import { useComponent } from "../../context";
 import { Form } from "../../ui/Form";
 import { InputFile, InputString, InputYear } from "../../ui/Input";
-import { Fields } from "../../ui/utils";
-import useValidation from "../../validation/useValidation";
 import { Spinner } from "../../ui/Spinner";
+import { Fields } from "../../ui/utils";
 
 export enum FieldNames {
   TITLE = "title",
@@ -26,7 +26,6 @@ const fields: Fields = {
 
 export default function BookEditForm(): ReactElement {
   const params = useParams();
-  const { isValid } = useValidation();
   const { components, setComponents } = useComponent();
   const { downSM } = useBreakPoints();
   const [path, setPath] = useState<string | null>(null);
@@ -36,18 +35,7 @@ export default function BookEditForm(): ReactElement {
     variables: { id: params.bookId },
     pause: Boolean(!params.bookId),
   });
-  const { executeMutation: updateMutation, fetching } = useMutation(UpdateBookDocument);
-
-  const executeUpdate = () => {
-    updateMutation({
-      id: params.bookId,
-      input: {
-        title: components.title.value,
-        released: components.released.value,
-      },
-      file: components.file.value,
-    });
-  };
+  const { execMutation: updateMutation, fetching } = useMutation(UpdateBookDocument);
 
   useEffect(() => {
     if (data) {
@@ -62,18 +50,19 @@ export default function BookEditForm(): ReactElement {
     }
   }, [data]);
 
-  const onSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (
-      isValid({
-        [FieldNames.TITLE]: components[FieldNames.TITLE],
-        [FieldNames.RELEASED]: components[FieldNames.RELEASED],
-        [FieldNames.FILE]: components[FieldNames.FILE],
-      })
-    ) {
-      executeUpdate();
-    }
+    const data = {
+      id: params.bookId,
+      input: {
+        title: components.title.value,
+        released: components.released.value,
+      },
+      file: components.file.value,
+    };
+
+    await updateMutation(bookUpdate, data);
   };
 
   return (

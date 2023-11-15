@@ -1,10 +1,11 @@
 import { ReactElement, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  CreateAstronautDocument,
   AstronautDocument,
+  CreateAstronautDocument,
   UpdateAstronautDocument,
 } from "../../../api/gql/graphql";
+import { astronautCreate, astronautUpdate } from "../../../validation/schema/Astronauts";
 import { RouterAction } from "../../App/Router/utils";
 import { useData, useLoaderData, useMutation } from "../../App/hooks";
 import useComponent from "../../context/useComponent";
@@ -12,7 +13,6 @@ import { DatePicker } from "../../ui/DatePicker";
 import { Form as UiForm } from "../../ui/Form";
 import { InputString } from "../../ui/Input";
 import { Fields } from "../../ui/utils";
-import useValidation from "../../validation/useValidation";
 
 export enum FieldNames {
   NAME = "name",
@@ -24,18 +24,17 @@ export enum FieldNames {
 }
 
 const fields: Fields = {
-  [FieldNames.NAME]: { required: true, Component: InputString },
-  [FieldNames.SURNAME]: { required: true, Component: InputString },
-  [FieldNames.SKILL]: { required: true, Component: InputString },
-  [FieldNames.BIRTH]: { required: true, Component: DatePicker },
-  [FieldNames.HAIR]: { required: false, Component: InputString },
-  [FieldNames.EYES]: { required: false, Component: InputString },
+  [FieldNames.NAME]: { Component: InputString },
+  [FieldNames.SURNAME]: { Component: InputString },
+  [FieldNames.SKILL]: { Component: InputString },
+  [FieldNames.BIRTH]: { Component: DatePicker },
+  [FieldNames.HAIR]: { Component: InputString },
+  [FieldNames.EYES]: { Component: InputString },
 };
 export default function Form(): ReactElement {
   const { resource, action } = useLoaderData();
   const params = useParams();
   const navigate = useNavigate();
-  const { isValid } = useValidation();
   const { components, setComponents } = useComponent();
 
   const { data: qData } = useData({
@@ -45,11 +44,11 @@ export default function Form(): ReactElement {
   });
   const astronaut = qData?.astronaut;
 
-  const { executeMutation: createMutation } = useMutation(CreateAstronautDocument);
-  const { executeMutation: updateMutation } = useMutation(UpdateAstronautDocument);
+  const { execMutation: createMutation } = useMutation(CreateAstronautDocument);
+  const { execMutation: updateMutation } = useMutation(UpdateAstronautDocument);
 
-  const executeCreate = () => {
-    createMutation({
+  const executeCreate = async () => {
+    const data = {
       input: {
         name: components.name.value,
         surName: components.surName.value,
@@ -58,10 +57,16 @@ export default function Form(): ReactElement {
         hair: components.hair.value,
         eyes: components.eyes.value,
       },
-    });
+    };
+
+    const isValid = await createMutation(astronautCreate, data);
+
+    if (isValid) {
+      navigate(`/${resource}`);
+    }
   };
-  const executeUpdate = () => {
-    updateMutation({
+  const executeUpdate = async () => {
+    const data = {
       id: params.astronautId,
       input: {
         name: components.name.value,
@@ -71,7 +76,13 @@ export default function Form(): ReactElement {
         hair: components.hair.value,
         eyes: components.eyes.value,
       },
-    });
+    };
+
+    const isValid = await updateMutation(astronautUpdate, data);
+
+    if (isValid) {
+      navigate(`/${resource}`);
+    }
   };
 
   useEffect(() => {
@@ -91,11 +102,7 @@ export default function Form(): ReactElement {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-
-    if (isValid()) {
-      action === RouterAction.NEW ? executeCreate() : executeUpdate();
-      navigate(`/${resource}`);
-    }
+    action === RouterAction.NEW ? executeCreate() : executeUpdate();
   };
-  return <UiForm onSubmit={onSubmit} />;
+  return <UiForm onSubmit={onSubmit} validationSchema={astronautCreate} />;
 }

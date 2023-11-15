@@ -14,12 +14,17 @@ generator client {
 generator pothos {
   provider = "prisma-pothos-types"
   // clientOutput = "../prisma/generated"
-  // output       = "../server/generated.ts"
+  output   = "../server/generated.ts"
 }
 
 enum BookEntryType {
   cover
   back
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
 
 model Employee {

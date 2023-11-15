@@ -57,7 +57,7 @@ const AstronautInput = builder.inputType("AstronautInput", {
     birth: t.field({ type: "Date", required: true }),
     skill: t.string({ required: true }),
     hair: t.string(),
-    eyes: t.string({ required: true }),
+    eyes: t.string(),
   }),
 });
 

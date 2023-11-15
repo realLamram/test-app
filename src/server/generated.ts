@@ -1,5 +1,5 @@
 /* eslint-disable */
-import type { Prisma, Employee, Astronaut, Author, Book, Entry } from "../prisma/generated";
+import type { Prisma, Employee, Astronaut, Author, Book, Entry } from "/Users/slajchrt/Documents/Repos/test-app/node_modules/@prisma/client";
 export default interface PrismaTypes {
     Employee: {
         Name: "Employee";

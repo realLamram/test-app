@@ -11,11 +11,11 @@ export type FormProps = BoxProps<"form"> & {
   submitted?: boolean;
   onSubmit?: (input: Data) => void;
   disabled?: boolean;
-  // children?: any;
+  validationSchema?: any;
 };
 
 const FormItem = ([name, field]: [name: string, field: Field]): ReactElement => {
-  const { Component, error, value, required, disabled } = field;
+  const { Component, error, value, required, disabled, helperText } = field;
 
   return (
     <>
@@ -25,11 +25,10 @@ const FormItem = ([name, field]: [name: string, field: Field]): ReactElement => 
           name={name}
           label={name}
           error={error}
-          helperText={error && translate("requiredField")}
+          helperText={helperText}
           value={value}
           required={required}
           disabled={disabled}
-          // children={children}
         />
       )}
     </>
@@ -37,17 +36,23 @@ const FormItem = ([name, field]: [name: string, field: Field]): ReactElement => 
 };
 
 export default function Form(props: FormProps) {
-  const { fields = {}, disabled = false, onSubmit = () => {}, ...other } = props;
+  const { fields = {}, disabled = false, onSubmit = () => {}, validationSchema, ...other } = props;
   const { components } = useComponent();
+
+  const schema = validationSchema?.describe().fields;
 
   return (
     <Box onSubmit={onSubmit} component="form" {...other}>
       <Grid gap={2} xl={4} lg={3}>
-        <>
-          {Object.entries(Object.keys(fields)?.length ? fields : components).map((item, idx) => (
-            <Fragment key={idx}> {FormItem(item)}</Fragment>
-          ))}
-        </>
+        {Object.entries(Object.keys(fields)?.length ? fields : components).map(
+          ([key, val], idx) => {
+            val = {
+              ...val,
+              required: !schema?.[key].nullable || false,
+            };
+            return <Fragment key={idx}> {FormItem([key, val])}</Fragment>;
+          }
+        )}
         <Box
           sx={{
             mt: 2,

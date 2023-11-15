@@ -13,8 +13,8 @@ import { ResponsiveButton } from "../../ui/Button";
 import { Form as UiForm } from "../../ui/Form";
 import { InputFile, InputString, InputYear } from "../../ui/Input";
 import { Field, Fields } from "../../ui/utils";
-import useValidation from "../../validation/useValidation";
 import AuthorForm from "./AuthForm";
+import { bookCreate } from "../../../validation/schema/Books";
 
 export enum FieldNames {
   TITLE = "title",
@@ -33,7 +33,6 @@ export default function BookForm(): ReactElement {
   const { resource, action } = useLoaderData();
   const params = useParams();
   const navigate = useNavigate();
-  const { isValid } = useValidation();
   const { components, setComponents } = useComponent();
   const [author, setAuthor] = useState<Record<string, any> | null>(null);
   const [newAuthor, setNewAuthor] = useState<{ name: string; surName: string } | null>(null);
@@ -55,18 +54,7 @@ export default function BookForm(): ReactElement {
   });
   const book = qData?.book;
 
-  const { executeMutation: createMutation } = useMutation(CreateBookDocument);
-
-  const executeCreate = () => {
-    createMutation({
-      input: {
-        authorId: author?.id,
-        title: components.title.value,
-        released: components.released.value,
-      },
-      file: components.file.value,
-    });
-  };
+  const { execMutation: createMutation } = useMutation(CreateBookDocument);
 
   useEffect(() => {
     create && (setAuthor(null), setDisAutoComp(true));
@@ -87,17 +75,21 @@ export default function BookForm(): ReactElement {
     }
   }, [fields, book]);
 
-  const onSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (
-      isValid({
-        [FieldNames.TITLE]: components[FieldNames.TITLE],
-        [FieldNames.RELEASED]: components[FieldNames.RELEASED],
-        [FieldNames.FILE]: components[FieldNames.FILE],
-      })
-    ) {
-      executeCreate();
+    const data = {
+      input: {
+        authorId: author?.id,
+        title: components.title.value,
+        released: components.released.value,
+      },
+      file: components.file.value,
+    };
+
+    const isValid = await createMutation(bookCreate, data);
+
+    if (isValid) {
       navigate(`/${resource}`);
     }
   };

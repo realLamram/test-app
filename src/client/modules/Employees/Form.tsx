@@ -5,6 +5,7 @@ import {
   EmployeeDocument,
   UpdateEmployeeDocument,
 } from "../../../api/gql/graphql";
+import { employeeCreate, employeeUpdate } from "../../../validation/schema/Employees";
 import { RouterAction } from "../../App/Router/utils";
 import { useData, useLoaderData, useMutation } from "../../App/hooks";
 import useContextData from "../../context/useComponent";
@@ -12,7 +13,6 @@ import { DatePicker } from "../../ui/DatePicker";
 import { Form as UiForm } from "../../ui/Form";
 import { InputString } from "../../ui/Input";
 import { Fields } from "../../ui/utils";
-import useValidation from "../../validation/useValidation";
 
 export enum FieldNames {
   NAME = "name",
@@ -22,16 +22,15 @@ export enum FieldNames {
 }
 
 const fields: Fields = {
-  [FieldNames.NAME]: { required: true, Component: InputString },
-  [FieldNames.SURNAME]: { required: true, Component: InputString },
-  [FieldNames.SKILL]: { required: false, Component: InputString },
-  [FieldNames.BIRTH]: { required: true, Component: DatePicker },
+  [FieldNames.NAME]: { Component: InputString },
+  [FieldNames.SURNAME]: { Component: InputString },
+  [FieldNames.SKILL]: { Component: InputString },
+  [FieldNames.BIRTH]: { Component: DatePicker },
 };
 export default function Form(): ReactElement {
   const { resource, action } = useLoaderData();
   const params = useParams();
   const navigate = useNavigate();
-  const { isValid } = useValidation();
   const { components, setComponents } = useContextData();
 
   const { data: qData } = useData({
@@ -41,21 +40,28 @@ export default function Form(): ReactElement {
   });
   const employee = qData?.employee;
 
-  const { executeMutation: createMutation } = useMutation(CreateEmployeeDocument);
-  const { executeMutation: updateMutation } = useMutation(UpdateEmployeeDocument);
+  const { execMutation: updateMutation } = useMutation(UpdateEmployeeDocument);
+  const { execMutation: createMutation } = useMutation(CreateEmployeeDocument);
 
-  const executeCreate = () => {
-    createMutation({
+  const executeCreate = async () => {
+    const data = {
       input: {
         name: components.name.value,
         surName: components.surName.value,
         skill: components.skill.value,
         birth: components.birth.value,
       },
-    });
+    };
+
+    const isValid = await createMutation(employeeCreate, data);
+
+    if (isValid) {
+      navigate(`/${resource}`);
+    }
   };
-  const executeUpdate = () => {
-    updateMutation({
+
+  const executeUpdate = async () => {
+    const data = {
       id: params.employeeId,
       input: {
         name: components.name.value,
@@ -63,7 +69,13 @@ export default function Form(): ReactElement {
         skill: components.skill.value,
         birth: components.birth.value,
       },
-    });
+    };
+
+    const isValid = await updateMutation(employeeUpdate, data);
+
+    if (isValid) {
+      navigate(`/${resource}`);
+    }
   };
 
   useEffect(() => {
@@ -83,11 +95,7 @@ export default function Form(): ReactElement {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-
-    if (isValid()) {
-      action === RouterAction.NEW ? executeCreate() : executeUpdate();
-      navigate(`/${resource}`);
-    }
+    action === RouterAction.NEW ? executeCreate() : executeUpdate();
   };
-  return <UiForm onSubmit={onSubmit} />;
+  return <UiForm onSubmit={onSubmit} validationSchema={employeeCreate} />;
 }

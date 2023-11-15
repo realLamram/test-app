@@ -33,15 +33,15 @@ jobs:
       - name: Dependencies
         run: |
           npm install
+      - name: Prisma generate
+        run: |
+          npm run generate
       - name: Build BE
         run: |
           npm run buildBE:prod          
       - name: Build
         run: |
           npm run buildFE:prod
-      - name: Prisma generate
-        run: |
-          npm run generate
       - name: Move images folder
         run: |
             ssh -o UserKnownHostsFile=./known_hosts -p $PORT $USER@$HOST mv /srv/app/public/images /srv/images

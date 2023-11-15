@@ -34,5 +34,7 @@
     "price": "Cena",
 
     "dialog_delete": "Opravdu chcete {{- data}} smazat?",
-    "tooBig": "Maximální povolená velikost souboru je 500 kB!"
+    "tooBig": "Maximální povolená velikost souboru je 500 kB!",
+    "notFuture": "Nelze zadávat do budoucnosti!",
+    "forbiddenFormat": "Zakázaný formát souboru!"
 }

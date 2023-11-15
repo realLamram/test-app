@@ -59,7 +59,6 @@ builder.mutationField("createAuthor", (t) =>
     },
 
     resolve: async (query, _, { input }) => {
-      console.log("object ", input);
       return await clientPrisma.author.create({
         ...query,
         data: { ...input },

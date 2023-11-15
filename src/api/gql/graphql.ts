@@ -35,7 +35,7 @@ export type Astronaut = {
 
 export type AstronautInput = {
   birth: Scalars['Date']['input'];
-  eyes: Scalars['String']['input'];
+  eyes?: InputMaybe<Scalars['String']['input']>;
   hair?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   skill: Scalars['String']['input'];

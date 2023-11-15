@@ -12,6 +12,7 @@ import { Form as UiForm } from "../../ui/Form";
 import { InputString } from "../../ui/Input";
 import { Fields } from "../../ui/utils";
 import useValidation from "../../validation/useValidation";
+import { authorCreate, authorUpdate } from "../../../validation/schema/Authors";
 
 export enum FieldNames {
   NAME = "name",
@@ -40,30 +41,37 @@ export default function AuthorForm(props: {
   });
   const book = qData?.book;
 
-  const { executeMutation: createMutation } = useMutation(CreateAuthorDocument);
-  const { executeMutation: updateMutation } = useMutation(UpdateAuthorDocument);
+  const { execMutation: createMutation } = useMutation(CreateAuthorDocument);
+  const { execMutation: updateMutation } = useMutation(UpdateAuthorDocument);
 
-  const executeCreate = () => {
-    setCreate(false);
-    setNewAuthor({
-      name: components.name.value,
-      surName: components.surName.value,
-    });
-    createMutation({
+  const executeCreate = async () => {
+    const data = {
       input: {
         name: components.name.value,
         surName: components.surName.value,
       },
-    });
+    };
+
+    const isValid = await createMutation(authorCreate, data);
+
+    if (isValid) {
+      setCreate(false);
+      setNewAuthor({
+        name: components.name.value,
+        surName: components.surName.value,
+      });
+    }
   };
-  const executeUpdate = () => {
-    updateMutation({
+
+  const executeUpdate = async () => {
+    const data = {
       id: params.bookId,
       input: {
         name: components.name.value,
         surName: components.surName.value,
       },
-    });
+    };
+    const isValid = await createMutation(authorUpdate, data);
   };
 
   useEffect(() => {
@@ -82,14 +90,8 @@ export default function AuthorForm(props: {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    if (
-      isValid({
-        [FieldNames.NAME]: components[FieldNames.NAME],
-        [FieldNames.SURNAME]: components[FieldNames.SURNAME],
-      })
-    ) {
-      action === RouterAction.NEW ? executeCreate() : executeUpdate();
-    }
+
+    action === RouterAction.NEW ? executeCreate() : executeUpdate();
   };
 
   return (

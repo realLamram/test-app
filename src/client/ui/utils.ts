@@ -21,6 +21,11 @@ export enum Component {
   AUTOCOMPLETE = "Autocomplete",
 }
 
+export function isRequired(schema: any, field: string): boolean {
+  const fieldNullable = schema.describe().fields[field].nullable;
+  return !fieldNullable ?? false;
+}
+
 // type ComponentProps<T> = {
 //   name?: string;
 //   label?: string;
@@ -32,13 +37,13 @@ export enum Component {
 // };
 
 export type Field = {
-  // Component: JSXElementConstructor<any> | React.FC<ComponentProps<any>>;
   Component: JSXElementConstructor<any> | any;
   required?: boolean;
   value?: any;
   error?: boolean;
   children?: any;
   disabled?: boolean;
+  helperText?: string;
 };
 
 export type Fields = {

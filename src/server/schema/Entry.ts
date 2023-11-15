@@ -1,4 +1,4 @@
-import { BookEntryType } from "../../prisma/generated";
+import { BookEntryType } from "@prisma/client";
 import { builder } from "../builder";
 
 const BookImageType = builder.enumType("BookImageType", { values: Object.values(BookEntryType) });

@@ -1,11 +1,11 @@
 import { stat, writeFile } from "fs/promises";
 import path from "path";
 import { clientPrisma } from "../../prisma";
-import { BookEntryType } from "../../prisma/generated";
 import { builder } from "../builder";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import util from "util";
+import { BookEntryType } from "@prisma/client";
 const readdir = util.promisify(fs.readdir);
 
 export const Book = builder.prismaObject("Book", {

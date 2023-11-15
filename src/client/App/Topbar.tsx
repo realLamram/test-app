@@ -21,10 +21,10 @@ import { ReactElement, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { translate } from "../../i18n/utils";
 import { useUser } from "../context";
-import { UserRole } from "../utils";
 import { Resource } from "./Router/utils";
 import SidebarToggle from "./Sidebar/SidebarToggle";
 import useBreakPoints from "./hooks/useBreakPoints";
+import { UserRole } from "../utils";
 
 type LinksProps = {
   text: string;
