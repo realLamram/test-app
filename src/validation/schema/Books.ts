@@ -7,7 +7,12 @@ export const bookCreate = object({
   released: number().integer().required(translate("requiredField")),
   file: mixed()
     .test("file", translate("forbiddenFormat"), (value) => {
-      return value instanceof File && (value.type === "image/jpeg" || value.type === "image/png");
+      if (value && Array.isArray(value)) {
+        return value.every((file) => {
+          return file instanceof File && (file.type === "image/jpeg" || file.type === "image/png");
+        });
+      }
+      return true;
     })
     .required(translate("requiredField")),
 });
@@ -17,9 +22,11 @@ export const bookUpdate = object({
   title: string().required(translate("requiredField")),
   released: number().integer().required(translate("requiredField")),
   file: mixed().test("file", translate("forbiddenFormat"), (value) => {
-    return (
-      (value instanceof File && (value.type === "image/jpeg" || value.type === "image/png")) ||
-      value === undefined
-    );
+    if (value && Array.isArray(value)) {
+      return value.every((file) => {
+        return file instanceof File && (file.type === "image/jpeg" || file.type === "image/png");
+      });
+    }
+    return true;
   }),
 });

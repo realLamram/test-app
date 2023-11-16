@@ -1,5 +1,7 @@
 import { clientPrisma } from "../../prisma";
+import { astronautCreate, astronautUpdate } from "../../validation/schema/Astronauts";
 import { builder } from "../builder";
+import yupValidation from "../yupValidation";
 
 export const Astronaut = builder.prismaObject("Astronaut", {
   fields: (t) => ({
@@ -69,6 +71,12 @@ builder.mutationField("createAstronaut", (t) =>
     },
 
     resolve: async (query, _, { input }) => {
+      const { isValid, errorMessages } = await yupValidation(astronautCreate, input);
+
+      if (!isValid) {
+        throw new Error(errorMessages?.join(", "));
+      }
+
       const user = await clientPrisma.astronaut.create({
         ...query,
         data: { ...input, active: true },
@@ -87,6 +95,15 @@ builder.mutationField("updateAstronaut", (t) =>
     },
 
     resolve: async (query, _, { id, input }) => {
+      const { isValid, errorMessages } = await yupValidation(astronautUpdate, {
+        ...input,
+        id,
+      });
+
+      if (!isValid) {
+        throw new Error(errorMessages?.join(", "));
+      }
+
       const user = await clientPrisma.astronaut.update({
         ...query,
         data: input,
@@ -103,12 +120,11 @@ builder.mutationField("destroyAstronaut", (t) =>
     args: {
       id: t.arg.id({ required: true }),
     },
-
     resolve: async (query, _, { id }) => {
       const user = await clientPrisma.astronaut.update({
         ...query,
         data: { active: false },
-        where: { id: id ? String(id) : "" },
+        where: { id },
       });
       return user;
     },

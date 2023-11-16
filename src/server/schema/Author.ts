@@ -1,5 +1,7 @@
 import { clientPrisma } from "../../prisma";
+import { authorCreate, authorUpdate } from "../../validation/schema/Authors";
 import { builder } from "../builder";
+import yupValidation from "../yupValidation";
 
 export const Author = builder.prismaObject("Author", {
   fields: (t) => ({
@@ -57,8 +59,12 @@ builder.mutationField("createAuthor", (t) =>
     args: {
       input: t.arg({ type: AuthorInput, required: true }),
     },
-
     resolve: async (query, _, { input }) => {
+      const { isValid, errorMessages } = await yupValidation(authorCreate, input);
+      if (!isValid) {
+        throw new Error(errorMessages?.join(", "));
+      }
+
       return await clientPrisma.author.create({
         ...query,
         data: { ...input },
@@ -76,6 +82,15 @@ builder.mutationField("updateAuthor", (t) =>
     },
 
     resolve: async (query, _, { id, input }) => {
+      const { isValid, errorMessages } = await yupValidation(authorUpdate, {
+        ...input,
+        id,
+      });
+
+      if (!isValid) {
+        throw new Error(errorMessages?.join(", "));
+      }
+
       const user = await clientPrisma.author.update({
         ...query,
         data: input,

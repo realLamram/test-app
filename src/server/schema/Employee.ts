@@ -1,5 +1,7 @@
 import { clientPrisma } from "../../prisma";
+import { employeeCreate, employeeUpdate } from "../../validation/schema/Employees";
 import { builder } from "../builder";
+import yupValidation from "../yupValidation";
 
 export const Employee = builder.prismaObject("Employee", {
   fields: (t) => ({
@@ -65,6 +67,11 @@ builder.mutationField("createEmployee", (t) =>
     },
 
     resolve: async (query, _, { input }) => {
+      const { isValid, errorMessages } = await yupValidation(employeeCreate, input);
+
+      if (!isValid) {
+        throw new Error(errorMessages?.join(", "));
+      }
       const user = await clientPrisma.employee.create({
         ...query,
         data: { ...input, active: true },
@@ -81,8 +88,16 @@ builder.mutationField("updateEmployee", (t) =>
       id: t.arg.id({ required: true }),
       input: t.arg({ type: EmployeeInput, required: true }),
     },
-
     resolve: async (query, _, { id, input }) => {
+      const { isValid, errorMessages } = await yupValidation(employeeUpdate, {
+        ...input,
+        id,
+      });
+
+      if (!isValid) {
+        throw new Error(errorMessages?.join(", "));
+      }
+
       const user = await clientPrisma.employee.update({
         ...query,
         data: input,

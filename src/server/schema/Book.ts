@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import util from "util";
 import { BookEntryType } from "@prisma/client";
+import yupValidation from "../yupValidation";
+import { bookCreate, bookUpdate } from "../../validation/schema/Books";
 const readdir = util.promisify(fs.readdir);
 
 export const Book = builder.prismaObject("Book", {
@@ -71,6 +73,15 @@ builder.mutationField("createBook", (t) =>
 
     resolve: async (query, _, args) => {
       const { input, file } = args;
+
+      const { isValid, errorMessages } = await yupValidation(bookCreate, {
+        ...input,
+        file,
+      });
+
+      if (!isValid) {
+        throw new Error(errorMessages?.join(", "));
+      }
 
       const book = await clientPrisma.book.create({
         ...query,
@@ -139,6 +150,16 @@ builder.mutationField("updateBook", (t) =>
     resolve: async (query, _, { id, input, file }) => {
       const _file = await file;
       let extension = null;
+
+      const { isValid, errorMessages } = await yupValidation(bookUpdate, {
+        ...input,
+        id,
+        file: _file,
+      });
+
+      if (!isValid) {
+        throw new Error(errorMessages?.join(", "));
+      }
 
       if (_file) {
         const { filename, createReadStream } = _file;
