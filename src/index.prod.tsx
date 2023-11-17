@@ -3,6 +3,10 @@ import ReactDOM from "react-dom/client";
 import { Provider, cacheExchange, createClient, fetchExchange, mapExchange } from "urql";
 import Router from "./client/App/Router/Router";
 import "./i18n";
+import ReactGA from "react-ga";
+
+ReactGA.initialize("UA-293452339-1");
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 export const url = "https://testapp-6884.rostiapp.cz";
 
