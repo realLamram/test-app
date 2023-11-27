@@ -1,5 +1,5 @@
-import { Box, Card, CardContent, CardHeader } from "@mui/material";
-import { ReactElement } from "react";
+import { Autocomplete, Box, Card, CardContent, CardHeader, Stack, TextField } from "@mui/material";
+import { ReactElement, useEffect, useState } from "react";
 import { EmployeesDocument } from "../../../api/gql/graphql";
 import { translate } from "../../../i18n/utils";
 import { useData } from "../../App/hooks";
@@ -8,9 +8,11 @@ import { Link } from "../../ui/Link";
 import { List } from "../../ui/List";
 import EditIcon from "@mui/icons-material/Edit";
 import { Employee } from "../../../api";
+import { Fulltext } from "../../ui/Fulltext";
 
 export default function Employees(): ReactElement {
-  const { data } = useData<Employee>({ doc: EmployeesDocument });
+  const [search, setSearch] = useState<string>("");
+  const { data } = useData<Employee>({ doc: EmployeesDocument, variables: { search } });
 
   return (
     <Box>
@@ -26,6 +28,9 @@ export default function Employees(): ReactElement {
           }
         />
         <CardContent>
+          <Stack direction="row" sx={{ width: "100%" }}>
+            <Fulltext sx={{ width: 500 }} value={search} onChange={(e: string) => setSearch(e)} />
+          </Stack>
           <List
             primary={["name", "surName"]}
             secondary={["birth", "skill"]}

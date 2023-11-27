@@ -6,3 +6,4 @@ import "./Query";
 import "./Mutation";
 import "./BigInt";
 import "./Entry";
+import "./Film";

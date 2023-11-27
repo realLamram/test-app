@@ -36,6 +36,7 @@ model Employee {
   active    Boolean? @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  todo      Todo[]
 }
 
 model Astronaut {
@@ -83,4 +84,14 @@ model Entry {
   bookId    String
 
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+model Todo {
+  id         String   @id @default(uuid())
+  title      String
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  employeeID String
+  employee   Employee @relation(fields: [employeeID], references: [id])
 }

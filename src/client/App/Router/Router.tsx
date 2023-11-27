@@ -3,9 +3,7 @@ import { LoaderFunctionArgs, Params, RouterProvider, createBrowserRouter } from 
 import App from "../App";
 import { IndexView } from "../../ui/View";
 import { Resource, RouterAction } from "./utils";
-import employees from "./routes/employees";
-import astronauts from "./routes/astronauts";
-import books from "./routes/books";
+import { astronauts, books, employees, films } from "./routes";
 
 export type RouterChildren = {
   path: string;
@@ -40,6 +38,7 @@ const router = createBrowserRouter([
       ...books(),
       ...astronauts(),
       ...employees(),
+      ...films(),
       {
         path: "*",
         element: <div>Not found!</div>,

@@ -20,6 +20,7 @@ import { Resource } from "../Router/utils";
 import SidebarContext from "./Context";
 import SidebarToggle from "./SidebarToggle";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
 
 type LinkProps = {
   title: string;
@@ -28,6 +29,7 @@ type LinkProps = {
 };
 
 const links: LinkProps[] = [
+  { title: "Films", path: Resource.FILMS, icon: <LocalMoviesIcon /> },
   { title: "Books", path: Resource.BOOKS, icon: <AutoStoriesIcon /> },
   { title: "Astronauts", path: Resource.ASTRONAUTS, icon: <RocketLaunchIcon /> },
   { title: "Employees", path: Resource.EMPLOYEES, icon: <GroupIcon /> },

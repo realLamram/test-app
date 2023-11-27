@@ -12,8 +12,8 @@ query Employee($id: ID!) {
   }
 }
 
-query Employees {
-  employees {
+query Employees($search: String) {
+  employees(search: $search) {
     ...employee
   }
 }

@@ -36,20 +36,50 @@ builder.queryField("book", (t) => {
   });
 });
 
+// export const SearchInput = inputObjectType({
+//   name: 'SearchInput',
+//   definition(t) {
+//     t.string('title', { nullable: true });
+//     t.string('author', { nullable: true });
+//     // Další pole podle potřeby
+//   },
+// });
+
+const SearchInput = builder.inputType("SearchInput", {
+  fields: (t) => ({
+    title: t.string(),
+    author: t.string(),
+  }),
+});
+
 builder.queryField("books", (t) => {
   return t.prismaField({
     type: [Book],
     nullable: true,
     args: {
       // orderBy: t.arg({ type: [BudgetProposalOrderByInput] }),
-      search: t.arg.string(),
+      search: t.arg({
+        type: SearchInput,
+      }),
       skip: t.arg.int(),
       take: t.arg.int(),
       // where: t.arg({ type: BudgetProposalWhereInput }),
     },
-    resolve: async (query, _, {}: any) => {
+    resolve: async (query, _, { search }: any) => {
       return await clientPrisma.book.findMany({
         ...query,
+        where: {
+          OR: [
+            {
+              title: { contains: search.title },
+
+              OR: [
+                { author: { name: { contains: search.author } } },
+                { author: { surName: { contains: search.author } } },
+              ],
+            },
+          ],
+        },
       });
     },
   });

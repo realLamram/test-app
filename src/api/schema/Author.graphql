@@ -13,8 +13,8 @@ query Author($id: ID!) {
   }
 }
 
-query Authors {
-  authors {
+query Authors($search: String) {
+  authors(search: $search) {
     ...author
   }
 }

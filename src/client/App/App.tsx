@@ -3,6 +3,7 @@ import ThemeProvider from "../theme/ThemeProvider";
 import Layout from "./Layout";
 import RouterProvider from "./Router/Provider";
 import UserProvider from "../context/UserProvider";
+import { ToastProvider } from "../validation";
 
 function App() {
   return (
@@ -11,7 +12,9 @@ function App() {
       <Box display="flex">
         <RouterProvider>
           <UserProvider>
-            <Layout />
+            <ToastProvider>
+              <Layout />
+            </ToastProvider>
           </UserProvider>
         </RouterProvider>
       </Box>

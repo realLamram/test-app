@@ -38,9 +38,12 @@ builder.queryField("authors", (t) => {
       take: t.arg.int(),
       // where: t.arg({ type: BudgetProposalWhereInput }),
     },
-    resolve: async (query, _, {}: any) => {
+    resolve: async (query, _, { search }: any) => {
       return await clientPrisma.author.findMany({
         ...query,
+        where: search && {
+          OR: [{ name: { contains: search } }, { surName: { contains: search } }],
+        },
       });
     },
   });
@@ -94,7 +97,7 @@ builder.mutationField("updateAuthor", (t) =>
       const user = await clientPrisma.author.update({
         ...query,
         data: input,
-        where: { id: id ? String(id) : "" },
+        where: { id },
       });
       return user;
     },

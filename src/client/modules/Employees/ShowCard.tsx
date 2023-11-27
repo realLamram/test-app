@@ -1,3 +1,4 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Card, CardContent, CardHeader, Grid, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
@@ -8,13 +9,12 @@ import { Employee } from "../../../api";
 import { DestroyEmployeeDocument, EmployeeDocument } from "../../../api/gql/graphql";
 import { translate } from "../../../i18n/utils";
 import { RouterAction } from "../../App/Router/utils";
+import { useLoaderData, useMutation } from "../../App/hooks";
 import { Avatar } from "../../ui/Avatar";
 import { ResponsiveButton } from "../../ui/Button";
+import { ConfirmDialog } from "../../ui/Dialog";
 import { Link } from "../../ui/Link";
 import { localeDate } from "../../ui/utils";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { ConfirmDialog } from "../../ui/Dialog";
-import { useLoaderData, useMutation } from "../../App/hooks";
 
 export default function ShowCard(): ReactElement {
   const { resource } = useLoaderData();
@@ -29,7 +29,7 @@ export default function ShowCard(): ReactElement {
     },
   });
 
-  const { executeMutation: destroyEmployee } = useMutation(DestroyEmployeeDocument);
+  const { execDelete: destroyEmployee } = useMutation(DestroyEmployeeDocument);
 
   const handleSubmit = () => {
     destroyEmployee({ id: params.employeeId });

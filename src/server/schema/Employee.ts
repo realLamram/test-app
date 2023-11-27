@@ -39,12 +39,15 @@ builder.queryField("employees", (t) => {
       search: t.arg.string(),
       skip: t.arg.int(),
       take: t.arg.int(),
-      // where: t.arg({ type: BudgetProposalWhereInput }),
+      // where: t.arg.string(),
     },
-    resolve: async (query, _, {}: any) => {
+    resolve: async (query, _, { search }: any) => {
       return await clientPrisma.employee.findMany({
         ...query,
-        where: { active: true },
+        where: {
+          active: true,
+          OR: [{ name: { contains: search } }, { surName: { contains: search } }],
+        },
       });
     },
   });
@@ -101,7 +104,7 @@ builder.mutationField("updateEmployee", (t) =>
       const user = await clientPrisma.employee.update({
         ...query,
         data: input,
-        where: { id: id ? String(id) : "" },
+        where: { id },
       });
       return user;
     },
@@ -119,7 +122,7 @@ builder.mutationField("destroyEmployee", (t) =>
       const user = await clientPrisma.employee.update({
         ...query,
         data: { active: false },
-        where: { id: id ? String(id) : "" },
+        where: { id },
       });
       return user;
     },

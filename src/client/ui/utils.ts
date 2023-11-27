@@ -26,16 +26,6 @@ export function isRequired(schema: any, field: string): boolean {
   return !fieldNullable ?? false;
 }
 
-// type ComponentProps<T> = {
-//   name?: string;
-//   label?: string;
-//   error?: boolean;
-//   helperText?: string | false;
-//   value?: any;
-//   required?: boolean;
-//   // children: T;
-// };
-
 export type Field = {
   Component: JSXElementConstructor<any> | any;
   required?: boolean;

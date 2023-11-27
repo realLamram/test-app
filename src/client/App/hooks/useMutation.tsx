@@ -1,11 +1,29 @@
 import { DocumentNode } from "graphql";
 import { useMutation as useUrqlMutation } from "urql";
-import { useValidation } from "../../validation";
+import { translate } from "../../../i18n/utils";
 import { flattenObject } from "../../utils";
+import { useToast, useValidation } from "../../validation";
+import { Severity } from "../../validation/ToastContext";
 
 export default function useMutation(doc: DocumentNode) {
   const { isValid } = useValidation();
-  const [{ fetching, data, error }, executeMutation] = useUrqlMutation(doc);
+  const { setOpenToast, setToastMessage, setSeverity } = useToast();
+
+  const [result, executeMutation] = useUrqlMutation(doc);
+  const { fetching, data, error } = result;
+
+  const execDelete = async ({ id, path }: { id?: string; path?: string }): Promise<any> => {
+    try {
+      await executeMutation({ id, path });
+      setOpenToast(true);
+      setToastMessage(translate("successDelete"));
+      setSeverity(Severity.Success);
+    } catch (error) {
+      setOpenToast(true);
+      setToastMessage(translate("errorSave"));
+      setSeverity(Severity.Error);
+    }
+  };
 
   const execMutation = async (validationSchema: any, data: any): Promise<boolean> => {
     const flatInput = flattenObject({ ...data });
@@ -18,5 +36,5 @@ export default function useMutation(doc: DocumentNode) {
     return valid;
   };
 
-  return { fetching, data, error, executeMutation, execMutation };
+  return { fetching, data, error, executeMutation, execMutation, execDelete };
 }

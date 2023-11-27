@@ -1,6 +1,6 @@
 import { createTheme, ThemeOptions } from "@mui/material";
 
-const colors = {
+export const colors = {
   yellowCreme: "#FFFDD0",
   yellowVeryLight: "#FFFFF5",
 };

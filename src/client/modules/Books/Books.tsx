@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Book } from "../../../api";
 import { BooksDocument } from "../../../api/gql/graphql";
 import { translate } from "../../../i18n/utils";
-import { useData } from "../../App/hooks";
+import { useBreakPoints, useData } from "../../App/hooks";
 import { useUser } from "../../context";
 import { IconBtn, ResponsiveButton } from "../../ui/Button";
 import { FormatStack, FormatString } from "../../ui/Format";
@@ -16,9 +16,16 @@ import { List } from "../../ui/List";
 import { UserRole } from "../../utils";
 import ListItemAction from "./ListItemAction";
 import { Spinner } from "../../ui/Spinner";
+import { Fulltext } from "../../ui/Fulltext";
 
 export default function Books(): ReactElement {
-  const { data, fetching } = useData<Book>({ doc: BooksDocument });
+  const { down450 } = useBreakPoints();
+  const [searchBook, setSearchBook] = useState<string>("");
+  const [searchAuthor, setSearchAuthor] = useState<string>("");
+  const { data, fetching } = useData<Book>({
+    doc: BooksDocument,
+    variables: { search: { title: searchBook, author: searchAuthor } },
+  });
   const [books, setBooks] = useState([]);
   const { userRole, customerView, setCustomerView } = useUser();
   const navigate = useNavigate();
@@ -77,6 +84,18 @@ export default function Books(): ReactElement {
           }
         />
         <CardContent>
+          <Stack direction={down450 ? "column" : "row"} sx={{ width: "100%" }} spacing={2}>
+            <Fulltext
+              placeHolder={translate("searchBook")}
+              value={searchBook}
+              onChange={(e: string) => setSearchBook(e)}
+            />
+            <Fulltext
+              placeHolder={translate("searchAuthor")}
+              value={searchAuthor}
+              onChange={(e: string) => setSearchAuthor(e)}
+            />
+          </Stack>
           {fetching ? (
             <Box
               sx={{

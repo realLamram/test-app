@@ -26,8 +26,8 @@ query Book($id: ID!) {
   }
 }
 
-query Books {
-  books {
+query Books($search: SearchInput) {
+  books(search: $search) {
     ...book
   }
 }

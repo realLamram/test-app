@@ -22,6 +22,10 @@ export default function Home(): ReactElement {
           <Typography sx={{ ...style, p: 1, my: 1 }}>Here you can check my repository.</Typography>
         </a>
 
+        <Typography sx={{ ...style, p: 1, my: 1 }}>
+          You can check the assigned task in the <b>Films</b> module.
+        </Typography>
+
         <Typography sx={{ ...style, p: 1 }}>
           You can turn on the <b> administrator role </b> in the user avatar in the top-right corner
           of this website.
@@ -32,23 +36,12 @@ export default function Home(): ReactElement {
         </Typography>
 
         <Typography sx={{ ...style, p: 1, my: 1 }}>
-          There is a yellow button{" "}
-          <IconBtn
-            sx={{
-              backgroundColor: yellow[300],
-              ":hover": {
-                backgroundColor: yellow[500],
-              },
-            }}
-          >
-            <VisibilityIcon />
-          </IconBtn>{" "}
-          in the Book module that you can use to <b>switch to customer view</b>.
-        </Typography>
-
-        <Typography sx={{ ...style, p: 1, my: 1 }}>
           This website emphasizes <b>types</b> (TypeScript), <b>responsiveness</b> and{" "}
           <b>reusability</b> of components.
+        </Typography>
+        <Typography sx={{ ...style, p: 1, my: 1 }}>
+          The <b>technologies</b> used to develop these pages are: React, TypeScript, GraphQL, URQL,
+          Prisma, Pothos, Node.js, Express...
         </Typography>
       </CardContent>
     </Card>

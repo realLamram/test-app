@@ -10,6 +10,13 @@
     "update": "Uložit",
     "save": "Uložit",
     "uploadImage": "Nahrát obrázek",
+    "back": "Zpět",
+    "N/A": "Není k dispozici",
+    "N/A_image": "Obrázek není k dispozici",
+    "too_many_results": "Příliš mnoho výsledků.",
+    "keep_searching": "Pokračujte ve vyhledávání...",
+    "server_error": "Chyba serveru!",
+    "start_searching": "Začněte vyhledávat...",
 
     "cancel": "Zrušit",
     "confirm": "Potvrdit",
@@ -19,6 +26,7 @@
     "Employees": "Zaměstnanci",
     "Astronauts": "Astronauti",
     "Books": "Knihy",
+    "Films": "Filmy",
     "Authors": "Autoři",
     "Author": "Autor",
     
@@ -32,9 +40,28 @@
     "released": "Vydáno",
     "author": "Autor",
     "price": "Cena",
-
+    
+    "noResults": "Žádné výsledky...",   
     "dialog_delete": "Opravdu chcete {{- data}} smazat?",
     "tooBig": "Maximální povolená velikost souboru je 500 kB!",
     "notFuture": "Nelze zadávat do budoucnosti!",
-    "forbiddenFormat": "Zakázaný formát souboru!"
+    "forbiddenFormat": "Zakázaný formát souboru!",
+    "successSave": "Úspěšně uloženo.",
+    "errorSave": "Chyba při ukládání!",
+    "search": "Hledat...",
+    "searchBook": "Hledat knihu...",
+    "searchAuthor": "Hledat autora...",
+    "successDelete": "Úspěšně smazáno.",
+
+    "year": "Rok",
+    "films": "Filmy",
+
+    "plot": "Děj",
+    "director": "Režie",
+    "actors": "Herci",
+    "writer": "Scénář",
+    "language": "Jazyk",
+    "genre": "Žánr",
+    "country": "Země",
+    "movies_not_found": "Filmy nenalezeny."
 }

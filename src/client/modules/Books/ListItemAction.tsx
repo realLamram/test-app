@@ -3,13 +3,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, Stack, Tooltip } from "@mui/material";
 import { ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { useMutation } from "urql";
 import { Book } from "../../../api";
 import { DeleteBookDocument } from "../../../api/gql/graphql";
 import { translate } from "../../../i18n/utils";
 import { useUser, useDataContext } from "../../context";
 import { ConfirmButton } from "../../ui/Dialog";
 import { UserRole } from "../../utils";
+import { useMutation } from "../../App/hooks";
 
 export default function ListItemAction(): ReactElement {
   const { data } = useDataContext<Book>();
@@ -18,7 +18,7 @@ export default function ListItemAction(): ReactElement {
 
   const can = () => userRole === UserRole.ADMIN;
 
-  const [result, executeDelete] = useMutation(DeleteBookDocument);
+  const { execDelete: executeDelete } = useMutation(DeleteBookDocument);
 
   const deleteBook = () => {
     executeDelete({

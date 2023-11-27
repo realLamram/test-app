@@ -29,7 +29,7 @@ export default function ShowCard(): ReactElement {
     },
   });
 
-  const { executeMutation: destroyAstronaut } = useMutation(DestroyAstronautDocument);
+  const { execDelete: destroyAstronaut } = useMutation(DestroyAstronautDocument);
 
   const handleSubmit = () => {
     destroyAstronaut({ id: params.astronautId });

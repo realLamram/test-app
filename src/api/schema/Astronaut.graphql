@@ -14,8 +14,8 @@ query Astronaut($id: ID!) {
   }
 }
 
-query Astronauts {
-  astronauts {
+query Astronauts($search: String) {
+  astronauts(search: $search) {
     ...astronaut
   }
 }

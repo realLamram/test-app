@@ -7,7 +7,7 @@ export type UserProviderProps = PropsWithChildren<any>;
 export default function UserProvider({ children }: UserProviderProps): ReactElement {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const view = localStorage.getItem("view");
-  const [customerView, setCustomerView] = useState<boolean>(view === "admin" ? false : true);
+  const [customerView, setCustomerView] = useState<boolean>(view === "customer" ? true : false);
 
   useEffect(() => {
     const role = localStorage.getItem("userRole");

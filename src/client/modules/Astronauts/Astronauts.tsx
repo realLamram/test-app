@@ -1,6 +1,6 @@
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, Card, CardContent, CardHeader } from "@mui/material";
-import { ReactElement } from "react";
+import { Box, Card, CardContent, CardHeader, Stack } from "@mui/material";
+import { ReactElement, useState } from "react";
 import { AstronautsDocument } from "../../../api/gql/graphql";
 import { translate } from "../../../i18n/utils";
 import { useData } from "../../App/hooks";
@@ -8,9 +8,11 @@ import { ResponsiveButton } from "../../ui/Button";
 import { Link } from "../../ui/Link";
 import { List } from "../../ui/List";
 import { Astronaut } from "../../../api";
+import { Fulltext } from "../../ui/Fulltext";
 
 export default function Astronauts(): ReactElement {
-  const { data } = useData<Astronaut>({ doc: AstronautsDocument });
+  const [search, setSearch] = useState<string>("");
+  const { data } = useData<Astronaut>({ doc: AstronautsDocument, variables: { search } });
 
   return (
     <Box>
@@ -26,6 +28,9 @@ export default function Astronauts(): ReactElement {
           }
         />
         <CardContent>
+          <Stack direction="row" sx={{ width: "100%" }}>
+            <Fulltext sx={{ width: 500 }} value={search} onChange={(e: string) => setSearch(e)} />
+          </Stack>
           <List
             primary={["name", "surName"]}
             secondary={["birth", "skill", "hair", "eyes"]}

@@ -3,6 +3,7 @@ import { ReactElement, useContext } from "react";
 import { Outlet as ReactOutlet } from "react-router-dom";
 import SidebarContext from "./Sidebar/Context";
 import { useBreakPoints } from "./hooks";
+import { Toast } from "../ui/Toast";
 
 export default function Outlet(): ReactElement {
   const { downMD } = useBreakPoints();
@@ -34,6 +35,7 @@ export default function Outlet(): ReactElement {
           padding: 0,
         }}
       >
+        <Toast />
         <ReactOutlet />
       </Container>
     </Box>

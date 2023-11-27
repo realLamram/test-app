@@ -104,6 +104,32 @@ export interface Entry {
   type: BookImageType;
 }
 
+/** Film info. */
+export interface Film {
+  __typename?: 'Film';
+  actors?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
+  director?: Maybe<Scalars['String']['output']>;
+  genre?: Maybe<Scalars['String']['output']>;
+  imdbID?: Maybe<Scalars['String']['output']>;
+  language?: Maybe<Scalars['String']['output']>;
+  plot?: Maybe<Scalars['String']['output']>;
+  poster?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  writer?: Maybe<Scalars['String']['output']>;
+  year?: Maybe<Scalars['String']['output']>;
+}
+
+/** Complete films info. */
+export interface FilmsOutput {
+  __typename?: 'FilmsOutput';
+  Search: Array<Film>;
+  error?: Maybe<Scalars['String']['output']>;
+  response?: Maybe<Scalars['Boolean']['output']>;
+  totalResults?: Maybe<Scalars['Int']['output']>;
+}
+
 export interface Mutation {
   __typename?: 'Mutation';
   createAstronaut: Astronaut;
@@ -191,6 +217,8 @@ export interface Query {
   books?: Maybe<Array<Book>>;
   employee?: Maybe<Employee>;
   employees?: Maybe<Array<Employee>>;
+  film: Film;
+  filmsOutput: FilmsOutput;
 }
 
 
@@ -224,7 +252,7 @@ export type QueryBookArgs = {
 
 
 export type QueryBooksArgs = {
-  search?: InputMaybe<Scalars['String']['input']>;
+  search?: InputMaybe<SearchInput>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -241,6 +269,23 @@ export type QueryEmployeesArgs = {
   take?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
+export type QueryFilmArgs = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryFilmsOutputArgs = {
+  page?: InputMaybe<Scalars['Int']['input']>;
+  searchName?: InputMaybe<Scalars['String']['input']>;
+  searchYear?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export interface SearchInput {
+  author?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+}
+
 export type AstronautFragment = { __typename?: 'Astronaut', id: string, name: string, surName: string, birth: any, skill: string, hair?: string | null, eyes?: string | null };
 
 export type AstronautQueryVariables = Exact<{
@@ -250,7 +295,9 @@ export type AstronautQueryVariables = Exact<{
 
 export type AstronautQuery = { __typename?: 'Query', astronaut?: { __typename?: 'Astronaut', id: string, name: string, surName: string, birth: any, skill: string, hair?: string | null, eyes?: string | null } | null };
 
-export type AstronautsQueryVariables = Exact<{ [key: string]: never; }>;
+export type AstronautsQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type AstronautsQuery = { __typename?: 'Query', astronauts?: Array<{ __typename?: 'Astronaut', id: string, name: string, surName: string, birth: any, skill: string, hair?: string | null, eyes?: string | null }> | null };
@@ -286,7 +333,9 @@ export type AuthorQueryVariables = Exact<{
 
 export type AuthorQuery = { __typename?: 'Query', author: { __typename?: 'Author', id: string, name: string, surName: string, books: Array<{ __typename?: 'Book', id: string, title: string, released: number, author: { __typename?: 'Author', id: string, name: string, surName: string }, files: Array<{ __typename?: 'Entry', id: string, name: string, size: any, extension: string, path: string, type: BookImageType }> }> } };
 
-export type AuthorsQueryVariables = Exact<{ [key: string]: never; }>;
+export type AuthorsQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type AuthorsQuery = { __typename?: 'Query', authors?: Array<{ __typename?: 'Author', id: string, name: string, surName: string }> | null };
@@ -317,7 +366,9 @@ export type BookQueryVariables = Exact<{
 
 export type BookQuery = { __typename?: 'Query', book?: { __typename?: 'Book', id: string, title: string, released: number, author: { __typename?: 'Author', id: string, name: string, surName: string }, files: Array<{ __typename?: 'Entry', id: string, name: string, size: any, extension: string, path: string, type: BookImageType }> } | null };
 
-export type BooksQueryVariables = Exact<{ [key: string]: never; }>;
+export type BooksQueryVariables = Exact<{
+  search?: InputMaybe<SearchInput>;
+}>;
 
 
 export type BooksQuery = { __typename?: 'Query', books?: Array<{ __typename?: 'Book', id: string, title: string, released: number, author: { __typename?: 'Author', id: string, name: string, surName: string }, files: Array<{ __typename?: 'Entry', id: string, name: string, size: any, extension: string, path: string, type: BookImageType }> }> | null };
@@ -356,7 +407,9 @@ export type EmployeeQueryVariables = Exact<{
 
 export type EmployeeQuery = { __typename?: 'Query', employee?: { __typename?: 'Employee', id: string, name: string, surName: string, birth: any, skill?: string | null } | null };
 
-export type EmployeesQueryVariables = Exact<{ [key: string]: never; }>;
+export type EmployeesQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type EmployeesQuery = { __typename?: 'Query', employees?: Array<{ __typename?: 'Employee', id: string, name: string, surName: string, birth: any, skill?: string | null }> | null };
@@ -382,6 +435,26 @@ export type DestroyEmployeeMutationVariables = Exact<{
 
 
 export type DestroyEmployeeMutation = { __typename?: 'Mutation', destroyEmployee: { __typename?: 'Employee', id: string, name: string, surName: string, birth: any, skill?: string | null } };
+
+export type FilmFragment = { __typename?: 'Film', imdbID?: string | null, title?: string | null, year?: string | null };
+
+export type FilmsOutputFragment = { __typename?: 'FilmsOutput', error?: string | null, response?: boolean | null, totalResults?: number | null, Search: Array<{ __typename?: 'Film', imdbID?: string | null, title?: string | null, year?: string | null }> };
+
+export type FilmQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type FilmQuery = { __typename?: 'Query', film: { __typename?: 'Film', genre?: string | null, director?: string | null, actors?: string | null, country?: string | null, writer?: string | null, language?: string | null, plot?: string | null, poster?: string | null, imdbID?: string | null, title?: string | null, year?: string | null } };
+
+export type FilmsOutputQueryVariables = Exact<{
+  searchName?: InputMaybe<Scalars['String']['input']>;
+  searchYear?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type FilmsOutputQuery = { __typename?: 'Query', filmsOutput: { __typename?: 'FilmsOutput', error?: string | null, response?: boolean | null, totalResults?: number | null, Search: Array<{ __typename?: 'Film', imdbID?: string | null, title?: string | null, year?: string | null }> } };
 
 
 
@@ -468,11 +541,14 @@ export type ResolversTypes = {
   Employee: ResolverTypeWrapper<Employee>;
   EmployeeInput: EmployeeInput;
   Entry: ResolverTypeWrapper<Entry>;
+  Film: ResolverTypeWrapper<Film>;
+  FilmsOutput: ResolverTypeWrapper<FilmsOutput>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  SearchInput: SearchInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Upload: ResolverTypeWrapper<Scalars['Upload']['output']>;
 };
@@ -492,11 +568,14 @@ export type ResolversParentTypes = {
   Employee: Employee;
   EmployeeInput: EmployeeInput;
   Entry: Entry;
+  Film: Film;
+  FilmsOutput: FilmsOutput;
   Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
   Query: {};
+  SearchInput: SearchInput;
   String: Scalars['String']['output'];
   Upload: Scalars['Upload']['output'];
 };
@@ -558,6 +637,30 @@ export type EntryResolvers<ContextType = any, ParentType extends ResolversParent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type FilmResolvers<ContextType = any, ParentType extends ResolversParentTypes['Film'] = ResolversParentTypes['Film']> = {
+  actors?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  director?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  genre?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imdbID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  language?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  plot?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  poster?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  writer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  year?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type FilmsOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['FilmsOutput'] = ResolversParentTypes['FilmsOutput']> = {
+  Search?: Resolver<Array<ResolversTypes['Film']>, ParentType, ContextType>;
+  error?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  response?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  totalResults?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createAstronaut?: Resolver<ResolversTypes['Astronaut'], ParentType, ContextType, RequireFields<MutationCreateAstronautArgs, 'input'>>;
   createAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationCreateAuthorArgs, 'input'>>;
@@ -581,6 +684,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   books?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, Partial<QueryBooksArgs>>;
   employee?: Resolver<Maybe<ResolversTypes['Employee']>, ParentType, ContextType, RequireFields<QueryEmployeeArgs, 'id'>>;
   employees?: Resolver<Maybe<Array<ResolversTypes['Employee']>>, ParentType, ContextType, Partial<QueryEmployeesArgs>>;
+  film?: Resolver<ResolversTypes['Film'], ParentType, ContextType, Partial<QueryFilmArgs>>;
+  filmsOutput?: Resolver<ResolversTypes['FilmsOutput'], ParentType, ContextType, Partial<QueryFilmsOutputArgs>>;
 };
 
 export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
@@ -595,6 +700,8 @@ export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   Employee?: EmployeeResolvers<ContextType>;
   Entry?: EntryResolvers<ContextType>;
+  Film?: FilmResolvers<ContextType>;
+  FilmsOutput?: FilmsOutputResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Upload?: GraphQLScalarType;

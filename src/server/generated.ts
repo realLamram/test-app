@@ -1,19 +1,24 @@
 /* eslint-disable */
-import type { Prisma, Employee, Astronaut, Author, Book, Entry } from "/Users/slajchrt/Documents/Repos/test-app/node_modules/@prisma/client";
+import type { Prisma, Employee, Astronaut, Author, Book, Entry, Todo } from "/Users/slajchrt/Documents/Repos/test-app/node_modules/@prisma/client";
 export default interface PrismaTypes {
     Employee: {
         Name: "Employee";
         Shape: Employee;
-        Include: never;
+        Include: Prisma.EmployeeInclude;
         Select: Prisma.EmployeeSelect;
         OrderBy: Prisma.EmployeeOrderByWithRelationInput;
         WhereUnique: Prisma.EmployeeWhereUniqueInput;
         Where: Prisma.EmployeeWhereInput;
         Create: {};
         Update: {};
-        RelationName: never;
-        ListRelations: never;
-        Relations: {};
+        RelationName: "todo";
+        ListRelations: "todo";
+        Relations: {
+            todo: {
+                Shape: Todo[];
+                Name: "Todo";
+            };
+        };
     };
     Astronaut: {
         Name: "Astronaut";
@@ -87,6 +92,25 @@ export default interface PrismaTypes {
             book: {
                 Shape: Book;
                 Name: "Book";
+            };
+        };
+    };
+    Todo: {
+        Name: "Todo";
+        Shape: Todo;
+        Include: Prisma.TodoInclude;
+        Select: Prisma.TodoSelect;
+        OrderBy: Prisma.TodoOrderByWithRelationInput;
+        WhereUnique: Prisma.TodoWhereUniqueInput;
+        Where: Prisma.TodoWhereInput;
+        Create: {};
+        Update: {};
+        RelationName: "employee";
+        ListRelations: never;
+        Relations: {
+            employee: {
+                Shape: Employee;
+                Name: "Employee";
             };
         };
     };

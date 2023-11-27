@@ -16,7 +16,7 @@ export default async function yupValidation(
           errorPaths.push(error.path);
         }
         errorMessages.push(error.message);
-        console.error(error.message);
+        // console.error(error.message);
       });
     });
   return {

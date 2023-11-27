@@ -19,6 +19,7 @@ export type DatePickerProps = MuiDatePickerProps<dayjs.Dayjs> & {
   name?: string;
   label?: string;
   required?: boolean;
+  handleDelete?: () => void;
 };
 
 const DatePicker = (props: DatePickerProps): ReactElement => {
@@ -31,6 +32,7 @@ const DatePicker = (props: DatePickerProps): ReactElement => {
     label,
     name,
     required,
+    handleDelete,
     ...other
   } = props;
   const [hover, setHover] = useState<boolean>(false);
@@ -48,7 +50,7 @@ const DatePicker = (props: DatePickerProps): ReactElement => {
     onMouseLeave: () => setHover(false),
   };
 
-  const handleDelete = () => {
+  const _handleDelete = () => {
     props.name && setInput({ name: props.name, value: null });
   };
 
@@ -59,7 +61,7 @@ const DatePicker = (props: DatePickerProps): ReactElement => {
           <IconButton
             sx={{ position: "absolute", right: "45px" }}
             size="small"
-            onClick={handleDelete}
+            onClick={handleDelete ?? _handleDelete}
           >
             <CloseIcon fontSize="small" />
           </IconButton>

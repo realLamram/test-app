@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from "react-router-dom";
-import { ActionView, CustomerView, IndexView, ShowView } from "../../../ui/View";
+import { ActionView, IndexView, ShowView } from "../../../ui/View";
 import { Resource, RouterAction } from "../utils";
 import { Loader, RouterChildren } from "../Router";
 
@@ -16,7 +16,7 @@ export default function books(): RouterChildren[] {
     },
     {
       path: `${Resource.BOOKS}/customerview`,
-      element: <CustomerView />,
+      element: <IndexView />,
       loader: async ({ params }: LoaderFunctionArgs): Promise<Loader> => ({
         resource: Resource.BOOKS,
         action: RouterAction.CUSTOMER_VIEW,

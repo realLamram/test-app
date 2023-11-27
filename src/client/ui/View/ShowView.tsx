@@ -11,7 +11,7 @@ export default function ShowView(): ReactElement {
   }, []);
 
   return (
-    <Card sx={{ py: 1 }}>
+    <Card sx={{ py: 1, my: 1 }}>
       <CardHeader title="Detail" />
       <CardContent>{components} </CardContent>
     </Card>

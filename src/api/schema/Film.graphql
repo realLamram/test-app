@@ -1,0 +1,34 @@
+fragment film on Film {
+  imdbID
+  title
+  year
+}
+
+fragment filmsOutput on FilmsOutput {
+  Search {
+    ...film
+  }
+  error
+  response
+  totalResults
+}
+
+query Film($id: String!) {
+  film(id: $id) {
+    ...film
+    genre
+    director
+    actors
+    country
+    writer
+    language
+    plot
+    poster
+  }
+}
+
+query FilmsOutput($searchName: String, $searchYear: Int, $page: Int) {
+  filmsOutput(searchName: $searchName, searchYear: $searchYear, page: $page) {
+    ...filmsOutput
+  }
+}

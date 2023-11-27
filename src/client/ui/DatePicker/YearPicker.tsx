@@ -9,7 +9,8 @@ export type YearPickerProps = Omit<DatePickerProps<Dayjs>, "value" | "onChange" 
   label?: string;
   error?: boolean;
   helperText?: string;
-  name: string;
+  name?: string;
+  handleDelete?: () => void;
 };
 
 export default function YearPicker(props: YearPickerProps): ReactElement {
@@ -17,13 +18,13 @@ export default function YearPicker(props: YearPickerProps): ReactElement {
 
   return (
     <DatePicker
-      {...other}
       views={["year"]}
       value={typeof value === "number" ? dayjs().year(value) : value}
       label={label}
       onChange={(date) => {
         onChange(date ? date.year() : date);
       }}
+      {...other}
     />
   );
 }

@@ -43,10 +43,13 @@ builder.queryField("astronauts", (t) => {
       take: t.arg.int(),
       // where: t.arg({ type: BudgetProposalWhereInput }),
     },
-    resolve: async (query, _, {}: any) => {
+    resolve: async (query, _, { search }: any) => {
       return await clientPrisma.astronaut.findMany({
         ...query,
-        where: { active: true },
+        where: {
+          active: true,
+          OR: [{ name: { contains: search } }, { surName: { contains: search } }],
+        },
       });
     },
   });
@@ -107,7 +110,7 @@ builder.mutationField("updateAstronaut", (t) =>
       const user = await clientPrisma.astronaut.update({
         ...query,
         data: input,
-        where: { id: id ? String(id) : "" },
+        where: { id },
       });
       return user;
     },
