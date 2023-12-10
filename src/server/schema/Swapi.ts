@@ -74,15 +74,7 @@ builder.queryField("people", (t) => {
       page: t.arg.int(),
     },
     resolve: async (query, { searchName, page = 1 }: any) => {
-      // const apiUrl = `http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${encodeURIComponent(
-      //   searchName
-      // )}&y=${encodeURIComponent(searchYear)}&page=${encodeURIComponent(page ?? 1)}`;
-      console.log("object");
       const apiUrl = `https://swapi.dev/api/people/?search=${searchName}&page=${page}&format=json`;
-
-      //   &s=${encodeURIComponent(
-      //     searchName
-      //   )}
 
       try {
         const response = await fetch(apiUrl);

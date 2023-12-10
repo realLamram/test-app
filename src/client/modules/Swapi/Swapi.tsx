@@ -1,15 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  List,
-  ListItem,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { Card, CardContent, CardHeader, List, ListItem } from "@mui/material";
 import { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Character, PeopleDocument, PeopleOutput } from "../../../api/gql/graphql";
@@ -20,10 +9,9 @@ import { Fulltext } from "../../ui/Fulltext";
 import { Link } from "../../ui/Link";
 import { Pagination } from "../../ui/Pagination";
 import { Spinner } from "../../ui/Spinner";
-import Item from "./Item";
 import { useToast } from "../../validation";
 import { Severity } from "../../validation/ToastContext";
-import { set } from "react-ga";
+import Item from "./Item";
 
 export default function Swapi(): ReactElement {
   const [page, setPage] = useState<number>(1);
@@ -73,8 +61,6 @@ export default function Swapi(): ReactElement {
   const handlePagination = (e: ChangeEvent<any>, page: number) => {
     setPage(page);
   };
-
-  console.log(data);
 
   return (
     <Card>
