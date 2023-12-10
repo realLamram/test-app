@@ -17,6 +17,8 @@
     "keep_searching": "Pokračujte ve vyhledávání...",
     "server_error": "Chyba serveru!",
     "start_searching": "Začněte vyhledávat...",
+    "unknown": "Neuvedeno",
+    "not": "Není",
 
     "cancel": "Zrušit",
     "confirm": "Potvrdit",
@@ -64,6 +66,12 @@
     "language": "Jazyk",
     "genre": "Žánr",
     "country": "Země",
-    "movies_not_found": "Filmy nenalezeny."
+    "movies_not_found": "Filmy nenalezeny.",
+    
+    "Characters": "Postavy",
+    "gender": "Pohlaví",
+    "birth_year": "Rok narození",
+    "eye_color": "Barva očí",
+    "skin_color": "Barva pleti"
 
 }

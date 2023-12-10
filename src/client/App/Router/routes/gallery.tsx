@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from "react-router-dom";
-import { IndexView, ShowView } from "../../../ui/View";
+import { IndexView } from "../../../ui/View";
 import { Loader, RouterChildren } from "../Router";
 import { Resource, RouterAction } from "../utils";
 

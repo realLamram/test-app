@@ -80,6 +80,17 @@ export type BookUpdateInput = {
   title: Scalars['String']['input'];
 };
 
+/** Character info. */
+export type Character = {
+  __typename?: 'Character';
+  birth_year?: Maybe<Scalars['String']['output']>;
+  eye_color?: Maybe<Scalars['String']['output']>;
+  gender?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  skin_color?: Maybe<Scalars['String']['output']>;
+};
+
 export type Employee = {
   __typename?: 'Employee';
   active?: Maybe<Scalars['Boolean']['output']>;
@@ -217,6 +228,15 @@ export type MutationUpdateEmployeeArgs = {
   input: EmployeeInput;
 };
 
+/** People info. */
+export type PeopleOutput = {
+  __typename?: 'PeopleOutput';
+  count?: Maybe<Scalars['Int']['output']>;
+  next?: Maybe<Scalars['String']['output']>;
+  previous?: Maybe<Scalars['String']['output']>;
+  results?: Maybe<Array<Character>>;
+};
+
 export type Query = {
   __typename?: 'Query';
   astronaut?: Maybe<Astronaut>;
@@ -225,10 +245,12 @@ export type Query = {
   authors?: Maybe<Array<Author>>;
   book?: Maybe<Book>;
   books?: Maybe<Array<Book>>;
+  character?: Maybe<Character>;
   employee?: Maybe<Employee>;
   employees?: Maybe<Array<Employee>>;
   film: Film;
   filmsOutput: FilmsOutput;
+  people: PeopleOutput;
   thumbnails: Array<Thumbnail>;
 };
 
@@ -269,6 +291,11 @@ export type QueryBooksArgs = {
 };
 
 
+export type QueryCharacterArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type QueryEmployeeArgs = {
   id: Scalars['ID']['input'];
 };
@@ -290,6 +317,12 @@ export type QueryFilmsOutputArgs = {
   page?: InputMaybe<Scalars['Int']['input']>;
   searchName?: InputMaybe<Scalars['String']['input']>;
   searchYear?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryPeopleArgs = {
+  page?: InputMaybe<Scalars['Int']['input']>;
+  searchName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SearchInput = {
@@ -565,6 +598,34 @@ export type ThumbnailsQuery = { __typename?: 'Query', thumbnails: Array<(
     & { ' $fragmentRefs'?: { 'ThumbnailFragment': ThumbnailFragment } }
   )> };
 
+export type CharacterFragment = { __typename?: 'Character', id?: string | null, name?: string | null, birth_year?: string | null, eye_color?: string | null, skin_color?: string | null, gender?: string | null } & { ' $fragmentName'?: 'CharacterFragment' };
+
+export type PeopleOutputFragment = { __typename?: 'PeopleOutput', count?: number | null, next?: string | null, previous?: string | null, results?: Array<(
+    { __typename?: 'Character' }
+    & { ' $fragmentRefs'?: { 'CharacterFragment': CharacterFragment } }
+  )> | null } & { ' $fragmentName'?: 'PeopleOutputFragment' };
+
+export type PeopleQueryVariables = Exact<{
+  searchName?: InputMaybe<Scalars['String']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type PeopleQuery = { __typename?: 'Query', people: (
+    { __typename?: 'PeopleOutput' }
+    & { ' $fragmentRefs'?: { 'PeopleOutputFragment': PeopleOutputFragment } }
+  ) };
+
+export type CharacterQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type CharacterQuery = { __typename?: 'Query', character?: (
+    { __typename?: 'Character' }
+    & { ' $fragmentRefs'?: { 'CharacterFragment': CharacterFragment } }
+  ) | null };
+
 export const AstronautFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"astronaut"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Astronaut"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"surName"}},{"kind":"Field","name":{"kind":"Name","value":"birth"}},{"kind":"Field","name":{"kind":"Name","value":"skill"}},{"kind":"Field","name":{"kind":"Name","value":"hair"}},{"kind":"Field","name":{"kind":"Name","value":"eyes"}}]}}]} as unknown as DocumentNode<AstronautFragment, unknown>;
 export const AuthorFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"author"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Author"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"surName"}}]}}]} as unknown as DocumentNode<AuthorFragment, unknown>;
 export const EntryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"entry"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Entry"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"extension"}},{"kind":"Field","name":{"kind":"Name","value":"path"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"size"}}]}}]} as unknown as DocumentNode<EntryFragment, unknown>;
@@ -574,6 +635,8 @@ export const FilmFragmentDoc = {"kind":"Document","definitions":[{"kind":"Fragme
 export const FilmsOutputFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"filmsOutput"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FilmsOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Search"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"film"}}]}},{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"response"}},{"kind":"Field","name":{"kind":"Name","value":"totalResults"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"film"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Film"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"imdbID"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"year"}}]}}]} as unknown as DocumentNode<FilmsOutputFragment, unknown>;
 export const InfoFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"info"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Info"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}}]}}]} as unknown as DocumentNode<InfoFragment, unknown>;
 export const ThumbnailFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"thumbnail"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Thumbnail"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnailURL"}},{"kind":"Field","name":{"kind":"Name","value":"info"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"info"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"info"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Info"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}}]}}]} as unknown as DocumentNode<ThumbnailFragment, unknown>;
+export const CharacterFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"character"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Character"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"birth_year"}},{"kind":"Field","name":{"kind":"Name","value":"eye_color"}},{"kind":"Field","name":{"kind":"Name","value":"skin_color"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]} as unknown as DocumentNode<CharacterFragment, unknown>;
+export const PeopleOutputFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"peopleOutput"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PeopleOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"next"}},{"kind":"Field","name":{"kind":"Name","value":"previous"}},{"kind":"Field","name":{"kind":"Name","value":"results"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"character"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"character"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Character"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"birth_year"}},{"kind":"Field","name":{"kind":"Name","value":"eye_color"}},{"kind":"Field","name":{"kind":"Name","value":"skin_color"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]} as unknown as DocumentNode<PeopleOutputFragment, unknown>;
 export const AstronautDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Astronaut"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"astronaut"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"astronaut"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"astronaut"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Astronaut"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"surName"}},{"kind":"Field","name":{"kind":"Name","value":"birth"}},{"kind":"Field","name":{"kind":"Name","value":"skill"}},{"kind":"Field","name":{"kind":"Name","value":"hair"}},{"kind":"Field","name":{"kind":"Name","value":"eyes"}}]}}]} as unknown as DocumentNode<AstronautQuery, AstronautQueryVariables>;
 export const AstronautsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Astronauts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"astronauts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"search"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"astronaut"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"astronaut"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Astronaut"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"surName"}},{"kind":"Field","name":{"kind":"Name","value":"birth"}},{"kind":"Field","name":{"kind":"Name","value":"skill"}},{"kind":"Field","name":{"kind":"Name","value":"hair"}},{"kind":"Field","name":{"kind":"Name","value":"eyes"}}]}}]} as unknown as DocumentNode<AstronautsQuery, AstronautsQueryVariables>;
 export const CreateAstronautDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateAstronaut"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AstronautInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createAstronaut"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"astronaut"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"astronaut"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Astronaut"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"surName"}},{"kind":"Field","name":{"kind":"Name","value":"birth"}},{"kind":"Field","name":{"kind":"Name","value":"skill"}},{"kind":"Field","name":{"kind":"Name","value":"hair"}},{"kind":"Field","name":{"kind":"Name","value":"eyes"}}]}}]} as unknown as DocumentNode<CreateAstronautMutation, CreateAstronautMutationVariables>;
@@ -596,3 +659,5 @@ export const DestroyEmployeeDocument = {"kind":"Document","definitions":[{"kind"
 export const FilmDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Film"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"film"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"film"}},{"kind":"Field","name":{"kind":"Name","value":"genre"}},{"kind":"Field","name":{"kind":"Name","value":"director"}},{"kind":"Field","name":{"kind":"Name","value":"actors"}},{"kind":"Field","name":{"kind":"Name","value":"country"}},{"kind":"Field","name":{"kind":"Name","value":"writer"}},{"kind":"Field","name":{"kind":"Name","value":"language"}},{"kind":"Field","name":{"kind":"Name","value":"plot"}},{"kind":"Field","name":{"kind":"Name","value":"poster"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"film"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Film"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"imdbID"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"year"}}]}}]} as unknown as DocumentNode<FilmQuery, FilmQueryVariables>;
 export const FilmsOutputDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FilmsOutput"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchYear"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"page"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"filmsOutput"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchName"}}},{"kind":"Argument","name":{"kind":"Name","value":"searchYear"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchYear"}}},{"kind":"Argument","name":{"kind":"Name","value":"page"},"value":{"kind":"Variable","name":{"kind":"Name","value":"page"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"filmsOutput"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"film"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Film"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"imdbID"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"year"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"filmsOutput"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FilmsOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Search"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"film"}}]}},{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"response"}},{"kind":"Field","name":{"kind":"Name","value":"totalResults"}}]}}]} as unknown as DocumentNode<FilmsOutputQuery, FilmsOutputQueryVariables>;
 export const ThumbnailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Thumbnails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"thumbnails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"thumbnail"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"info"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Info"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"thumbnail"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Thumbnail"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"thumbnailURL"}},{"kind":"Field","name":{"kind":"Name","value":"info"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"info"}}]}}]}}]} as unknown as DocumentNode<ThumbnailsQuery, ThumbnailsQueryVariables>;
+export const PeopleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"People"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"page"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"people"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchName"}}},{"kind":"Argument","name":{"kind":"Name","value":"page"},"value":{"kind":"Variable","name":{"kind":"Name","value":"page"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"peopleOutput"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"character"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Character"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"birth_year"}},{"kind":"Field","name":{"kind":"Name","value":"eye_color"}},{"kind":"Field","name":{"kind":"Name","value":"skin_color"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"peopleOutput"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PeopleOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"next"}},{"kind":"Field","name":{"kind":"Name","value":"previous"}},{"kind":"Field","name":{"kind":"Name","value":"results"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"character"}}]}}]}}]} as unknown as DocumentNode<PeopleQuery, PeopleQueryVariables>;
+export const CharacterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Character"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"character"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"character"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"character"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Character"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"birth_year"}},{"kind":"Field","name":{"kind":"Name","value":"eye_color"}},{"kind":"Field","name":{"kind":"Name","value":"skin_color"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]} as unknown as DocumentNode<CharacterQuery, CharacterQueryVariables>;

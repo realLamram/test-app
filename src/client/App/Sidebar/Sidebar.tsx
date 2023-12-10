@@ -22,6 +22,7 @@ import SidebarToggle from "./SidebarToggle";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
 import MapIcon from "@mui/icons-material/Map";
+import RocketIcon from "@mui/icons-material/Rocket";
 
 type LinkProps = {
   title: string;
@@ -31,6 +32,7 @@ type LinkProps = {
 
 const links: LinkProps[] = [
   { title: "Gallery", path: Resource.GALLERY, icon: <MapIcon /> },
+  { title: "Star Wars API", path: Resource.SWAPI, icon: <RocketIcon /> },
   { title: "Films", path: Resource.FILMS, icon: <LocalMoviesIcon /> },
   { title: "Books", path: Resource.BOOKS, icon: <AutoStoriesIcon /> },
   { title: "Astronauts", path: Resource.ASTRONAUTS, icon: <RocketLaunchIcon /> },

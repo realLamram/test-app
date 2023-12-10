@@ -3,7 +3,7 @@ import { LoaderFunctionArgs, Params, RouterProvider, createBrowserRouter } from 
 import App from "../App";
 import { IndexView } from "../../ui/View";
 import { Resource, RouterAction } from "./utils";
-import { astronauts, books, employees, films, gallery } from "./routes";
+import { astronauts, books, employees, films, gallery, swapi } from "./routes";
 
 export type RouterChildren = {
   path: string;
@@ -40,6 +40,7 @@ const router = createBrowserRouter([
       ...employees(),
       ...films(),
       ...gallery(),
+      ...swapi(),
       {
         path: "*",
         element: <div>Not found!</div>,

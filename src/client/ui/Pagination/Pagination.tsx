@@ -16,7 +16,7 @@ export default function Pagination(props: PaginationProps): ReactElement | null 
     return (
       <MuiPagination
         count={count ? Math.ceil(count / 10) : 0}
-        size={downLG ? "small" : "medium"}
+        size={"small"}
         page={page}
         onChange={onChange}
         variant="outlined"
@@ -24,7 +24,7 @@ export default function Pagination(props: PaginationProps): ReactElement | null 
         color="primary"
         showFirstButton
         showLastButton
-        siblingCount={downLG ? 0 : 1}
+        siblingCount={downLG ? 0 : 2}
         {...other}
       />
     );

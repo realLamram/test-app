@@ -8,3 +8,4 @@ import "./BigInt";
 import "./Entry";
 import "./Film";
 import "./Gallery";
+import "./Swapi";

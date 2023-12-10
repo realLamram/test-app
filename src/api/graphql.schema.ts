@@ -77,6 +77,17 @@ export interface BookUpdateInput {
   title: Scalars['String']['input'];
 }
 
+/** Character info. */
+export interface Character {
+  __typename?: 'Character';
+  birth_year?: Maybe<Scalars['String']['output']>;
+  eye_color?: Maybe<Scalars['String']['output']>;
+  gender?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  skin_color?: Maybe<Scalars['String']['output']>;
+}
+
 export interface Employee {
   __typename?: 'Employee';
   active?: Maybe<Scalars['Boolean']['output']>;
@@ -214,6 +225,15 @@ export type MutationUpdateEmployeeArgs = {
   input: EmployeeInput;
 };
 
+/** People info. */
+export interface PeopleOutput {
+  __typename?: 'PeopleOutput';
+  count?: Maybe<Scalars['Int']['output']>;
+  next?: Maybe<Scalars['String']['output']>;
+  previous?: Maybe<Scalars['String']['output']>;
+  results?: Maybe<Array<Character>>;
+}
+
 export interface Query {
   __typename?: 'Query';
   astronaut?: Maybe<Astronaut>;
@@ -222,10 +242,12 @@ export interface Query {
   authors?: Maybe<Array<Author>>;
   book?: Maybe<Book>;
   books?: Maybe<Array<Book>>;
+  character?: Maybe<Character>;
   employee?: Maybe<Employee>;
   employees?: Maybe<Array<Employee>>;
   film: Film;
   filmsOutput: FilmsOutput;
+  people: PeopleOutput;
   thumbnails: Array<Thumbnail>;
 }
 
@@ -266,6 +288,11 @@ export type QueryBooksArgs = {
 };
 
 
+export type QueryCharacterArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type QueryEmployeeArgs = {
   id: Scalars['ID']['input'];
 };
@@ -287,6 +314,12 @@ export type QueryFilmsOutputArgs = {
   page?: InputMaybe<Scalars['Int']['input']>;
   searchName?: InputMaybe<Scalars['String']['input']>;
   searchYear?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryPeopleArgs = {
+  page?: InputMaybe<Scalars['Int']['input']>;
+  searchName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export interface SearchInput {
@@ -481,6 +514,25 @@ export type ThumbnailsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ThumbnailsQuery = { __typename?: 'Query', thumbnails: Array<{ __typename?: 'Thumbnail', id: string, thumbnailURL: string, info?: { __typename?: 'Info', longitude?: number | null, latitude?: number | null } | null }> };
 
+export type CharacterFragment = { __typename?: 'Character', id?: string | null, name?: string | null, birth_year?: string | null, eye_color?: string | null, skin_color?: string | null, gender?: string | null };
+
+export type PeopleOutputFragment = { __typename?: 'PeopleOutput', count?: number | null, next?: string | null, previous?: string | null, results?: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, birth_year?: string | null, eye_color?: string | null, skin_color?: string | null, gender?: string | null }> | null };
+
+export type PeopleQueryVariables = Exact<{
+  searchName?: InputMaybe<Scalars['String']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type PeopleQuery = { __typename?: 'Query', people: { __typename?: 'PeopleOutput', count?: number | null, next?: string | null, previous?: string | null, results?: Array<{ __typename?: 'Character', id?: string | null, name?: string | null, birth_year?: string | null, eye_color?: string | null, skin_color?: string | null, gender?: string | null }> | null } };
+
+export type CharacterQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'Character', id?: string | null, name?: string | null, birth_year?: string | null, eye_color?: string | null, skin_color?: string | null, gender?: string | null } | null };
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -562,6 +614,7 @@ export type ResolversTypes = {
   BookImageType: BookImageType;
   BookUpdateInput: BookUpdateInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  Character: ResolverTypeWrapper<Character>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   Employee: ResolverTypeWrapper<Employee>;
   EmployeeInput: EmployeeInput;
@@ -573,6 +626,7 @@ export type ResolversTypes = {
   Info: ResolverTypeWrapper<Info>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  PeopleOutput: ResolverTypeWrapper<PeopleOutput>;
   Query: ResolverTypeWrapper<{}>;
   SearchInput: SearchInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -591,6 +645,7 @@ export type ResolversParentTypes = {
   BookCreateInput: BookCreateInput;
   BookUpdateInput: BookUpdateInput;
   Boolean: Scalars['Boolean']['output'];
+  Character: Character;
   Date: Scalars['Date']['output'];
   Employee: Employee;
   EmployeeInput: EmployeeInput;
@@ -602,6 +657,7 @@ export type ResolversParentTypes = {
   Info: Info;
   Int: Scalars['Int']['output'];
   Mutation: {};
+  PeopleOutput: PeopleOutput;
   Query: {};
   SearchInput: SearchInput;
   String: Scalars['String']['output'];
@@ -639,6 +695,16 @@ export type BookResolvers<ContextType = any, ParentType extends ResolversParentT
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   released?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CharacterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Character'] = ResolversParentTypes['Character']> = {
+  birth_year?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  eye_color?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  skin_color?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -710,6 +776,14 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateEmployee?: Resolver<ResolversTypes['Employee'], ParentType, ContextType, RequireFields<MutationUpdateEmployeeArgs, 'id' | 'input'>>;
 };
 
+export type PeopleOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['PeopleOutput'] = ResolversParentTypes['PeopleOutput']> = {
+  count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  results?: Resolver<Maybe<Array<ResolversTypes['Character']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   astronaut?: Resolver<Maybe<ResolversTypes['Astronaut']>, ParentType, ContextType, RequireFields<QueryAstronautArgs, 'id'>>;
   astronauts?: Resolver<Maybe<Array<ResolversTypes['Astronaut']>>, ParentType, ContextType, Partial<QueryAstronautsArgs>>;
@@ -717,10 +791,12 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   authors?: Resolver<Maybe<Array<ResolversTypes['Author']>>, ParentType, ContextType, Partial<QueryAuthorsArgs>>;
   book?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType, RequireFields<QueryBookArgs, 'id'>>;
   books?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType, Partial<QueryBooksArgs>>;
+  character?: Resolver<Maybe<ResolversTypes['Character']>, ParentType, ContextType, RequireFields<QueryCharacterArgs, 'id'>>;
   employee?: Resolver<Maybe<ResolversTypes['Employee']>, ParentType, ContextType, RequireFields<QueryEmployeeArgs, 'id'>>;
   employees?: Resolver<Maybe<Array<ResolversTypes['Employee']>>, ParentType, ContextType, Partial<QueryEmployeesArgs>>;
   film?: Resolver<ResolversTypes['Film'], ParentType, ContextType, Partial<QueryFilmArgs>>;
   filmsOutput?: Resolver<ResolversTypes['FilmsOutput'], ParentType, ContextType, Partial<QueryFilmsOutputArgs>>;
+  people?: Resolver<ResolversTypes['PeopleOutput'], ParentType, ContextType, Partial<QueryPeopleArgs>>;
   thumbnails?: Resolver<Array<ResolversTypes['Thumbnail']>, ParentType, ContextType>;
 };
 
@@ -740,6 +816,7 @@ export type Resolvers<ContextType = any> = {
   Author?: AuthorResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Book?: BookResolvers<ContextType>;
+  Character?: CharacterResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Employee?: EmployeeResolvers<ContextType>;
   Entry?: EntryResolvers<ContextType>;
@@ -747,6 +824,7 @@ export type Resolvers<ContextType = any> = {
   FilmsOutput?: FilmsOutputResolvers<ContextType>;
   Info?: InfoResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PeopleOutput?: PeopleOutputResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Thumbnail?: ThumbnailResolvers<ContextType>;
   Upload?: GraphQLScalarType;

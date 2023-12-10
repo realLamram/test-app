@@ -1,0 +1,29 @@
+fragment character on Character {
+  id
+  name
+  birth_year
+  eye_color
+  skin_color
+  gender
+}
+
+fragment peopleOutput on PeopleOutput {
+  count
+  next
+  previous
+  results {
+    ...character
+  }
+}
+
+query People($searchName: String, $page: Int) {
+  people(searchName: $searchName, page: $page) {
+    ...peopleOutput
+  }
+}
+
+query Character($id: String!) {
+  character(id: $id) {
+    ...character
+  }
+}

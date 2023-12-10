@@ -19,6 +19,7 @@ const documents = {
     "fragment employee on Employee {\n  id\n  name\n  surName\n  birth\n  skill\n}\n\nquery Employee($id: ID!) {\n  employee(id: $id) {\n    ...employee\n  }\n}\n\nquery Employees($search: String) {\n  employees(search: $search) {\n    ...employee\n  }\n}\n\nmutation CreateEmployee($input: EmployeeInput!) {\n  createEmployee(input: $input) {\n    ...employee\n  }\n}\n\nmutation UpdateEmployee($id: ID!, $input: EmployeeInput!) {\n  updateEmployee(id: $id, input: $input) {\n    ...employee\n  }\n}\n\nmutation DestroyEmployee($id: ID!) {\n  destroyEmployee(id: $id) {\n    ...employee\n  }\n}": types.EmployeeFragmentDoc,
     "fragment film on Film {\n  imdbID\n  title\n  year\n}\n\nfragment filmsOutput on FilmsOutput {\n  Search {\n    ...film\n  }\n  error\n  response\n  totalResults\n}\n\nquery Film($id: String!) {\n  film(id: $id) {\n    ...film\n    genre\n    director\n    actors\n    country\n    writer\n    language\n    plot\n    poster\n  }\n}\n\nquery FilmsOutput($searchName: String, $searchYear: Int, $page: Int) {\n  filmsOutput(searchName: $searchName, searchYear: $searchYear, page: $page) {\n    ...filmsOutput\n  }\n}": types.FilmFragmentDoc,
     "fragment info on Info {\n  longitude\n  latitude\n}\n\nfragment thumbnail on Thumbnail {\n  id\n  thumbnailURL\n  info {\n    ...info\n  }\n}\n\nquery Thumbnails {\n  thumbnails {\n    ...thumbnail\n  }\n}": types.InfoFragmentDoc,
+    "fragment character on Character {\n  id\n  name\n  birth_year\n  eye_color\n  skin_color\n  gender\n}\n\nfragment peopleOutput on PeopleOutput {\n  count\n  next\n  previous\n  results {\n    ...character\n  }\n}\n\nquery People($searchName: String, $page: Int) {\n  people(searchName: $searchName, page: $page) {\n    ...peopleOutput\n  }\n}\n\nquery Character($id: String!) {\n  character(id: $id) {\n    ...character\n  }\n}": types.CharacterFragmentDoc,
 };
 
 /**
@@ -59,6 +60,10 @@ export function graphql(source: "fragment film on Film {\n  imdbID\n  title\n  y
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "fragment info on Info {\n  longitude\n  latitude\n}\n\nfragment thumbnail on Thumbnail {\n  id\n  thumbnailURL\n  info {\n    ...info\n  }\n}\n\nquery Thumbnails {\n  thumbnails {\n    ...thumbnail\n  }\n}"): (typeof documents)["fragment info on Info {\n  longitude\n  latitude\n}\n\nfragment thumbnail on Thumbnail {\n  id\n  thumbnailURL\n  info {\n    ...info\n  }\n}\n\nquery Thumbnails {\n  thumbnails {\n    ...thumbnail\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "fragment character on Character {\n  id\n  name\n  birth_year\n  eye_color\n  skin_color\n  gender\n}\n\nfragment peopleOutput on PeopleOutput {\n  count\n  next\n  previous\n  results {\n    ...character\n  }\n}\n\nquery People($searchName: String, $page: Int) {\n  people(searchName: $searchName, page: $page) {\n    ...peopleOutput\n  }\n}\n\nquery Character($id: String!) {\n  character(id: $id) {\n    ...character\n  }\n}"): (typeof documents)["fragment character on Character {\n  id\n  name\n  birth_year\n  eye_color\n  skin_color\n  gender\n}\n\nfragment peopleOutput on PeopleOutput {\n  count\n  next\n  previous\n  results {\n    ...character\n  }\n}\n\nquery People($searchName: String, $page: Int) {\n  people(searchName: $searchName, page: $page) {\n    ...peopleOutput\n  }\n}\n\nquery Character($id: String!) {\n  character(id: $id) {\n    ...character\n  }\n}"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
