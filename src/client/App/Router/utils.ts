@@ -12,4 +12,5 @@ export enum Resource {
   ASTRONAUTS = "astronauts",
   BOOKS = "books",
   FILMS = "films",
+  GALLERY = "gallery",
 }

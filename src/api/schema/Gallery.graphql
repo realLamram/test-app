@@ -1,0 +1,18 @@
+fragment info on Info {
+  longitude
+  latitude
+}
+
+fragment thumbnail on Thumbnail {
+  id
+  thumbnailURL
+  info {
+    ...info
+  }
+}
+
+query Thumbnails {
+  thumbnails {
+    ...thumbnail
+  }
+}

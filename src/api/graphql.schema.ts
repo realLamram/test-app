@@ -126,8 +126,15 @@ export interface FilmsOutput {
   __typename?: 'FilmsOutput';
   Search: Array<Film>;
   error?: Maybe<Scalars['String']['output']>;
-  response?: Maybe<Scalars['Boolean']['output']>;
+  response?: Maybe<Scalars['String']['output']>;
   totalResults?: Maybe<Scalars['Int']['output']>;
+}
+
+/** Thumbnail info. */
+export interface Info {
+  __typename?: 'Info';
+  latitude?: Maybe<Scalars['Float']['output']>;
+  longitude?: Maybe<Scalars['Float']['output']>;
 }
 
 export interface Mutation {
@@ -219,6 +226,7 @@ export interface Query {
   employees?: Maybe<Array<Employee>>;
   film: Film;
   filmsOutput: FilmsOutput;
+  thumbnails: Array<Thumbnail>;
 }
 
 
@@ -284,6 +292,14 @@ export type QueryFilmsOutputArgs = {
 export interface SearchInput {
   author?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+}
+
+/** Info. */
+export interface Thumbnail {
+  __typename?: 'Thumbnail';
+  id: Scalars['ID']['output'];
+  info?: Maybe<Info>;
+  thumbnailURL: Scalars['String']['output'];
 }
 
 export type AstronautFragment = { __typename?: 'Astronaut', id: string, name: string, surName: string, birth: any, skill: string, hair?: string | null, eyes?: string | null };
@@ -438,7 +454,7 @@ export type DestroyEmployeeMutation = { __typename?: 'Mutation', destroyEmployee
 
 export type FilmFragment = { __typename?: 'Film', imdbID?: string | null, title?: string | null, year?: string | null };
 
-export type FilmsOutputFragment = { __typename?: 'FilmsOutput', error?: string | null, response?: boolean | null, totalResults?: number | null, Search: Array<{ __typename?: 'Film', imdbID?: string | null, title?: string | null, year?: string | null }> };
+export type FilmsOutputFragment = { __typename?: 'FilmsOutput', error?: string | null, response?: string | null, totalResults?: number | null, Search: Array<{ __typename?: 'Film', imdbID?: string | null, title?: string | null, year?: string | null }> };
 
 export type FilmQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -454,7 +470,16 @@ export type FilmsOutputQueryVariables = Exact<{
 }>;
 
 
-export type FilmsOutputQuery = { __typename?: 'Query', filmsOutput: { __typename?: 'FilmsOutput', error?: string | null, response?: boolean | null, totalResults?: number | null, Search: Array<{ __typename?: 'Film', imdbID?: string | null, title?: string | null, year?: string | null }> } };
+export type FilmsOutputQuery = { __typename?: 'Query', filmsOutput: { __typename?: 'FilmsOutput', error?: string | null, response?: string | null, totalResults?: number | null, Search: Array<{ __typename?: 'Film', imdbID?: string | null, title?: string | null, year?: string | null }> } };
+
+export type InfoFragment = { __typename?: 'Info', longitude?: number | null, latitude?: number | null };
+
+export type ThumbnailFragment = { __typename?: 'Thumbnail', id: string, thumbnailURL: string, info?: { __typename?: 'Info', longitude?: number | null, latitude?: number | null } | null };
+
+export type ThumbnailsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ThumbnailsQuery = { __typename?: 'Query', thumbnails: Array<{ __typename?: 'Thumbnail', id: string, thumbnailURL: string, info?: { __typename?: 'Info', longitude?: number | null, latitude?: number | null } | null }> };
 
 
 
@@ -545,11 +570,13 @@ export type ResolversTypes = {
   FilmsOutput: ResolverTypeWrapper<FilmsOutput>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Info: ResolverTypeWrapper<Info>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   SearchInput: SearchInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Thumbnail: ResolverTypeWrapper<Thumbnail>;
   Upload: ResolverTypeWrapper<Scalars['Upload']['output']>;
 };
 
@@ -572,11 +599,13 @@ export type ResolversParentTypes = {
   FilmsOutput: FilmsOutput;
   Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
+  Info: Info;
   Int: Scalars['Int']['output'];
   Mutation: {};
   Query: {};
   SearchInput: SearchInput;
   String: Scalars['String']['output'];
+  Thumbnail: Thumbnail;
   Upload: Scalars['Upload']['output'];
 };
 
@@ -656,8 +685,14 @@ export type FilmResolvers<ContextType = any, ParentType extends ResolversParentT
 export type FilmsOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['FilmsOutput'] = ResolversParentTypes['FilmsOutput']> = {
   Search?: Resolver<Array<ResolversTypes['Film']>, ParentType, ContextType>;
   error?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  response?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  response?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   totalResults?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type InfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Info'] = ResolversParentTypes['Info']> = {
+  latitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  longitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -686,6 +721,14 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   employees?: Resolver<Maybe<Array<ResolversTypes['Employee']>>, ParentType, ContextType, Partial<QueryEmployeesArgs>>;
   film?: Resolver<ResolversTypes['Film'], ParentType, ContextType, Partial<QueryFilmArgs>>;
   filmsOutput?: Resolver<ResolversTypes['FilmsOutput'], ParentType, ContextType, Partial<QueryFilmsOutputArgs>>;
+  thumbnails?: Resolver<Array<ResolversTypes['Thumbnail']>, ParentType, ContextType>;
+};
+
+export type ThumbnailResolvers<ContextType = any, ParentType extends ResolversParentTypes['Thumbnail'] = ResolversParentTypes['Thumbnail']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  info?: Resolver<Maybe<ResolversTypes['Info']>, ParentType, ContextType>;
+  thumbnailURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
@@ -702,8 +745,10 @@ export type Resolvers<ContextType = any> = {
   Entry?: EntryResolvers<ContextType>;
   Film?: FilmResolvers<ContextType>;
   FilmsOutput?: FilmsOutputResolvers<ContextType>;
+  Info?: InfoResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Thumbnail?: ThumbnailResolvers<ContextType>;
   Upload?: GraphQLScalarType;
 };
 

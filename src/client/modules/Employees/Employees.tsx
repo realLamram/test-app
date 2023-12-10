@@ -1,14 +1,14 @@
-import { Autocomplete, Box, Card, CardContent, CardHeader, Stack, TextField } from "@mui/material";
-import { ReactElement, useEffect, useState } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, Card, CardContent, CardHeader, Stack } from "@mui/material";
+import { ReactElement, useState } from "react";
+import { Employee } from "../../../api";
 import { EmployeesDocument } from "../../../api/gql/graphql";
 import { translate } from "../../../i18n/utils";
 import { useData } from "../../App/hooks";
 import { ResponsiveButton } from "../../ui/Button";
+import { Fulltext } from "../../ui/Fulltext";
 import { Link } from "../../ui/Link";
 import { List } from "../../ui/List";
-import EditIcon from "@mui/icons-material/Edit";
-import { Employee } from "../../../api";
-import { Fulltext } from "../../ui/Fulltext";
 
 export default function Employees(): ReactElement {
   const [search, setSearch] = useState<string>("");

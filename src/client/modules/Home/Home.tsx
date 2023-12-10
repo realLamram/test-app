@@ -1,8 +1,6 @@
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { yellow } from "@mui/material/colors";
 import { ReactElement } from "react";
-import { IconBtn } from "../../ui/Button";
 
 export default function Home(): ReactElement {
   const style = { backgroundColor: yellow[50], width: "fit-content" };
@@ -21,10 +19,6 @@ export default function Home(): ReactElement {
         <a target="_blank" href="https://github.com/realLamram/test-app">
           <Typography sx={{ ...style, p: 1, my: 1 }}>Here you can check my repository.</Typography>
         </a>
-
-        <Typography sx={{ ...style, p: 1, my: 1 }}>
-          You can check the assigned task in the <b>Films</b> module.
-        </Typography>
 
         <Typography sx={{ ...style, p: 1 }}>
           You can turn on the <b> administrator role </b> in the user avatar in the top-right corner

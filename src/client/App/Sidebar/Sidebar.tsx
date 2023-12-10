@@ -21,6 +21,7 @@ import SidebarContext from "./Context";
 import SidebarToggle from "./SidebarToggle";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
+import MapIcon from "@mui/icons-material/Map";
 
 type LinkProps = {
   title: string;
@@ -29,6 +30,7 @@ type LinkProps = {
 };
 
 const links: LinkProps[] = [
+  { title: "Gallery", path: Resource.GALLERY, icon: <MapIcon /> },
   { title: "Films", path: Resource.FILMS, icon: <LocalMoviesIcon /> },
   { title: "Books", path: Resource.BOOKS, icon: <AutoStoriesIcon /> },
   { title: "Astronauts", path: Resource.ASTRONAUTS, icon: <RocketLaunchIcon /> },

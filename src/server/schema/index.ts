@@ -7,3 +7,4 @@ import "./Mutation";
 import "./BigInt";
 import "./Entry";
 import "./Film";
+import "./Gallery";

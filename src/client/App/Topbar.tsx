@@ -33,7 +33,7 @@ type LinksProps = {
 
 const links = [
   { text: "Home", path: "/" },
-  { text: "Modules", path: `/${Resource.FILMS}` },
+  { text: "Modules", path: `/${Resource.GALLERY}` },
 ];
 
 export default function TopBar(): ReactElement {

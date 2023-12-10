@@ -1,13 +1,13 @@
 import express from "express";
+import { graphqlUploadExpress } from "graphql-upload-minimal";
 import { createYoga } from "graphql-yoga";
 import { join, resolve } from "path";
 import { ENDPOINT as graphqlEndpoint } from "../api";
 import { PUBLIC_DIR, SERVER_PORT } from "../env";
 import { builder } from "./builder";
 import "./schema";
-import { graphqlUploadExpress } from "graphql-upload-minimal";
 
-const app = express();
+export const app = express();
 
 app.use(express.static(PUBLIC_DIR));
 

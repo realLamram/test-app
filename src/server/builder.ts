@@ -16,12 +16,7 @@ export const builder = new SchemaBuilder<{
   PrismaTypes: PrismaTypes;
   Scalars: {
     Date: { Input: Date; Output: Date };
-    // File: { Input: File; Output: never };
     ID: { Input: string; Output: string };
-    // Upload: {
-    //   Input: File;
-    //   Output: File;
-    // };
     Upload: {
       Input: Promise<FileUpload>;
       Output: Promise<FileUpload>;
@@ -40,21 +35,17 @@ export const builder = new SchemaBuilder<{
   },
 });
 
-// Definujte skalární typ FileUpload
 const FileUpload = new GraphQLScalarType({
   name: "Upload",
   description: "A file upload.",
   parseValue(value) {
-    // Implementace zpracování hodnoty při přijetí, pokud je potřeba
     return value;
   },
   serialize(value) {
-    // Implementace serializace hodnoty, pokud je potřeba
     return value;
   },
   parseLiteral(ast) {
     if (ast.kind === Kind.STRING) {
-      // Implementace zpracování literálu, pokud je potřeba
       return ast.value;
     }
     return null;
@@ -62,5 +53,4 @@ const FileUpload = new GraphQLScalarType({
 });
 
 builder.addScalarType("Date", DateResolver, {});
-// builder.addScalarType("Upload", FileUpload, {});
 builder.addScalarType("Upload", GraphQLUpload, {});

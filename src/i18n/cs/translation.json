@@ -28,6 +28,7 @@
     "Books": "Knihy",
     "Films": "Filmy",
     "Authors": "Autoři",
+    "Gallery": "Galerie",
     "Author": "Autor",
     
     "name": "Jméno",
@@ -64,4 +65,5 @@
     "genre": "Žánr",
     "country": "Země",
     "movies_not_found": "Filmy nenalezeny."
+
 }
