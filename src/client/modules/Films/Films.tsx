@@ -14,7 +14,6 @@ import StyledList, { StyledListItem, StyledListItemTitle } from "./StyledItemsLi
 import { Spinner } from "../../ui/Spinner";
 import { useToast } from "../../validation";
 import { Severity } from "../../validation/ToastContext";
-import { set } from "react-ga";
 
 export default function Films(): ReactElement {
   const [searchName, setSearchName] = useState<string>("");

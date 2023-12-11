@@ -14,8 +14,11 @@ import { Severity } from "../../validation/ToastContext";
 import Item from "./Item";
 
 export default function Swapi(): ReactElement {
-  const [page, setPage] = useState<number>(1);
   const [params, setParams] = useSearchParams();
+  const [page, setPage] = useState<number>(params.get("page") ? Number(params.get("page")) : 1);
+  const [prevPage, setPrevPage] = useState<number>(
+    params.get("page") ? Number(params.get("page")) : 1
+  );
   const [searchName, setSearchName] = useState<string>(params.get("search") ?? "");
   const [prevSearchName, setPrevSearchName] = useState<string>(params.get("search") ?? "");
   const { setOpenToast, setSeverity, setToastMessage } = useToast();
@@ -26,29 +29,45 @@ export default function Swapi(): ReactElement {
   });
 
   useEffect(() => {
-    if (!params.get("search") && !params.get("page")) {
-      setPage(1);
+    const searchPar = params.get("search");
+    const pagePar = params.get("page");
+    if (searchPar && searchPar !== searchName) {
+      setSearchName(searchPar);
+    } else if (!searchPar && searchName !== "") {
       setSearchName("");
+    }
+
+    if (pagePar && pagePar !== `${page}`) {
+      setPage(Number(pagePar));
+    } else if (!pagePar && page !== 1) {
+      setPage(1);
     }
   }, [params]);
 
   useEffect(() => {
-    setParams((prevParams) => ({
-      ...prevParams,
-      ...(page && page !== 1 && prevSearchName === searchName ? { page: `${page}` } : {}),
-      ...(searchName ? { search: searchName } : {}),
-    }));
-
+    const searchPar = params.get("search");
+    const pagePar = params.get("page");
+    if (searchName !== prevSearchName && searchName !== searchPar) {
+      setParams((prevParams) => ({
+        ...prevParams,
+        ...(searchName ? { search: searchName } : {}),
+      }));
+    }
     if (prevSearchName !== searchName) {
       setPage(1);
     }
+    if (page !== prevPage && page !== Number(pagePar)) {
+      setParams((prevParams) => {
+        return {
+          ...prevParams,
+          ...(page && page !== 1 ? { page: `${page}` } : {}),
+          ...(searchName ? { search: searchName } : {}),
+        };
+      });
+    }
     setPrevSearchName(searchName);
+    setPrevPage(page);
   }, [page, searchName]);
-
-  useEffect(() => {
-    setSearchName(params.get("search") || "");
-    setPage(params.get("page") ? Number(params.get("page")) : 1);
-  }, []);
 
   useEffect(() => {
     if (error) {
