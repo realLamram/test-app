@@ -32,9 +32,9 @@ export default function ShowCard(): ReactElement {
     const value = Object.values(item)[0];
     const val = Object.values(value)[0];
     return (
-      <div style={{ marginBottom: 7 }}>
+      <Box style={{ marginBottom: 7 }}>
         <Item title={translate(Object.keys(value)[0])} text={val} />
-      </div>
+      </Box>
     );
   };
 
@@ -44,8 +44,8 @@ export default function ShowCard(): ReactElement {
         {fetching ? (
           <Stack>
             {Array.from({ length: 5 }, (_, index) => (
-              <ListItem>
-                <Skeleton animation="wave" key={index} variant="rounded" width={300} height={40} />
+              <ListItem key={index}>
+                <Skeleton animation="wave" variant="rounded" width={300} height={40} />
               </ListItem>
             ))}
           </Stack>

@@ -74,7 +74,9 @@ builder.queryField("people", (t) => {
       page: t.arg.int(),
     },
     resolve: async (query, { searchName, page = 1 }: any) => {
-      const apiUrl = `https://swapi.dev/api/people/?search=${searchName}&page=${page}&format=json`;
+      const apiUrl = `https://swapi.dev/api/people/?search=${searchName ?? ""}&page=${
+        page ?? ""
+      }&format=json`;
 
       try {
         const response = await fetch(apiUrl);
@@ -82,7 +84,6 @@ builder.queryField("people", (t) => {
           throw new Error("API request failed");
         }
         const data = await response.json();
-        console.log(data);
         const newResults = data.results.map((item: any) => ({
           ...item,
           id: item.url.split("/")[5],

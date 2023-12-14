@@ -1,11 +1,11 @@
 import { Pagination as MuiPagination, PaginationProps as MuiPaginationProps } from "@mui/material";
-import React, { ReactElement } from "react";
+import { ChangeEvent, ReactElement } from "react";
 import { useBreakPoints } from "../../App/hooks";
 
 export type PaginationProps = MuiPaginationProps & {
   count: number;
   page: number;
-  onChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  onChange: (event: ChangeEvent<unknown>, value: number) => void;
   fetching?: boolean;
 };
 

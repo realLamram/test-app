@@ -1,10 +1,9 @@
 import { Card, CardContent, CardHeader, List, ListItem } from "@mui/material";
 import { ChangeEvent, ReactElement, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { Character, PeopleDocument, PeopleOutput } from "../../../api/gql/graphql";
 import { translate } from "../../../i18n/utils";
 import { Resource } from "../../App/Router/utils";
-import { useData } from "../../App/hooks";
+import { useData, useUrlParams } from "../../App/hooks";
 import { Fulltext } from "../../ui/Fulltext";
 import { Link } from "../../ui/Link";
 import { Pagination } from "../../ui/Pagination";
@@ -14,60 +13,22 @@ import { Severity } from "../../validation/ToastContext";
 import Item from "./Item";
 
 export default function Swapi(): ReactElement {
-  const [params, setParams] = useSearchParams();
-  const [page, setPage] = useState<number>(params.get("page") ? Number(params.get("page")) : 1);
-  const [prevPage, setPrevPage] = useState<number>(
-    params.get("page") ? Number(params.get("page")) : 1
-  );
-  const [searchName, setSearchName] = useState<string>(params.get("search") ?? "");
-  const [prevSearchName, setPrevSearchName] = useState<string>(params.get("search") ?? "");
+  const [params, setParams] = useUrlParams();
+
+  const [searchName, setSearchName] = useState<string>(params.search);
+  const [page, setPage] = useState<number>(params?.page ? Number(params?.page) : 1);
+
+  useEffect(() => {
+    setSearchName(params.search);
+    setPage(params?.page ? Number(params.page) : 1);
+  }, [params]);
+
   const { setOpenToast, setSeverity, setToastMessage } = useToast();
 
   const { data, fetching, error } = useData<PeopleOutput>({
     doc: PeopleDocument,
     variables: { searchName, page },
   });
-
-  useEffect(() => {
-    const searchPar = params.get("search");
-    const pagePar = params.get("page");
-    if (searchPar && searchPar !== searchName) {
-      setSearchName(searchPar);
-    } else if (!searchPar && searchName !== "") {
-      setSearchName("");
-    }
-
-    if (pagePar && pagePar !== `${page}`) {
-      setPage(Number(pagePar));
-    } else if (!pagePar && page !== 1) {
-      setPage(1);
-    }
-  }, [params]);
-
-  useEffect(() => {
-    const searchPar = params.get("search");
-    const pagePar = params.get("page");
-    if (searchName !== prevSearchName && searchName !== searchPar) {
-      setParams((prevParams) => ({
-        ...prevParams,
-        ...(searchName ? { search: searchName } : {}),
-      }));
-    }
-    if (prevSearchName !== searchName) {
-      setPage(1);
-    }
-    if (page !== prevPage && page !== Number(pagePar)) {
-      setParams((prevParams) => {
-        return {
-          ...prevParams,
-          ...(page && page !== 1 ? { page: `${page}` } : {}),
-          ...(searchName ? { search: searchName } : {}),
-        };
-      });
-    }
-    setPrevSearchName(searchName);
-    setPrevPage(page);
-  }, [page, searchName]);
 
   useEffect(() => {
     if (error) {
@@ -77,10 +38,21 @@ export default function Swapi(): ReactElement {
     }
   }, [error, data]);
 
-  const handlePagination = (e: ChangeEvent<any>, page: number) => {
-    setPage(page);
+  const handlePagination = (e: ChangeEvent<unknown>, page: number) => {
+    setParams(
+      (!page || page === 1) && searchName
+        ? { search: searchName }
+        : page > 1 && searchName
+        ? { page: page.toString(), search: searchName }
+        : page > 1
+        ? { page: page.toString() }
+        : {}
+    );
   };
 
+  const handleFultextChange = (e: string) => {
+    setParams(e ? { search: e } : {});
+  };
   return (
     <Card>
       <CardHeader title={translate("Characters")} />
@@ -88,7 +60,7 @@ export default function Swapi(): ReactElement {
         <Fulltext
           sx={{ width: "100%", maxWidth: 400 }}
           value={searchName}
-          onChange={setSearchName}
+          onChange={handleFultextChange}
         />
         <List dense sx={{ maxWidth: 400 }}>
           {fetching ? (
