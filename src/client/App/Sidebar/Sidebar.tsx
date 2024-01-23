@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { ReactElement, ReactNode, useCallback, useContext, useEffect } from "react";
+import { Fragment, ReactElement, ReactNode, useCallback, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { translate } from "../../../i18n/utils";
 import { Link } from "../../ui/Link";
@@ -23,14 +23,24 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
 import MapIcon from "@mui/icons-material/Map";
 import RocketIcon from "@mui/icons-material/Rocket";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import useUser from "../User/useUser";
+import { UserRole } from "@prisma/client";
 
 type LinkProps = {
   title: string;
   path: string;
   icon: ReactNode;
+  canRoles?: UserRole[];
 };
 
 const links: LinkProps[] = [
+  {
+    title: "Login",
+    path: Resource.LOGIN,
+    icon: <VpnKeyIcon />,
+    canRoles: [UserRole.ADMIN, UserRole.USER],
+  },
   { title: "Gallery", path: Resource.GALLERY, icon: <MapIcon /> },
   { title: "Star Wars API", path: Resource.SWAPI, icon: <RocketIcon /> },
   { title: "Films", path: Resource.FILMS, icon: <LocalMoviesIcon /> },
@@ -43,6 +53,7 @@ export default function Sidebar(): ReactElement {
   const { pathname } = useLocation();
   const { open, setOpen, variant } = useContext(SidebarContext);
   const theme = useTheme();
+  const { can, user } = useUser();
 
   const selected = (path: string): boolean => (pathname.startsWith(`/${path}`) ? true : false);
 
@@ -78,9 +89,13 @@ export default function Sidebar(): ReactElement {
   const renderDrawerItems = useCallback(
     (): ReactElement[] =>
       links.map((link: LinkProps) => (
-        <DrawerItem key={link.path} path={link.path} title={link.title} icon={link.icon} />
+        <Fragment key={link.path}>
+          {can(link.canRoles) && (
+            <DrawerItem key={link.path} path={link.path} title={link.title} icon={link.icon} />
+          )}
+        </Fragment>
       )),
-    [open, pathname]
+    [open, pathname, user]
   );
 
   useEffect(() => {

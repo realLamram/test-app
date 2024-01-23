@@ -154,13 +154,16 @@ export interface Mutation {
   createAuthor: Author;
   createBook: Book;
   createEmployee: Employee;
+  createTodo: Todo;
   deleteBook: Book;
+  deleteTodo: Todo;
   destroyAstronaut: Astronaut;
   destroyEmployee: Employee;
   updateAstronaut: Astronaut;
   updateAuthor: Author;
   updateBook: Book;
   updateEmployee: Employee;
+  updateTodo: Todo;
 }
 
 
@@ -185,9 +188,19 @@ export type MutationCreateEmployeeArgs = {
 };
 
 
+export type MutationCreateTodoArgs = {
+  input: TodoCreateInput;
+};
+
+
 export type MutationDeleteBookArgs = {
   id: Scalars['ID']['input'];
   path?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationDeleteTodoArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -225,6 +238,12 @@ export type MutationUpdateEmployeeArgs = {
   input: EmployeeInput;
 };
 
+
+export type MutationUpdateTodoArgs = {
+  id: Scalars['ID']['input'];
+  input: TodoUpdateInput;
+};
+
 /** People info. */
 export interface PeopleOutput {
   __typename?: 'PeopleOutput';
@@ -249,6 +268,8 @@ export interface Query {
   filmsOutput: FilmsOutput;
   people: PeopleOutput;
   thumbnails: Array<Thumbnail>;
+  todo?: Maybe<Todo>;
+  todos?: Maybe<Array<Todo>>;
 }
 
 
@@ -322,6 +343,16 @@ export type QueryPeopleArgs = {
   searchName?: InputMaybe<Scalars['String']['input']>;
 };
 
+
+export type QueryTodoArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryTodosArgs = {
+  where?: InputMaybe<TodoWhereInput>;
+};
+
 export interface SearchInput {
   author?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
@@ -333,6 +364,26 @@ export interface Thumbnail {
   id: Scalars['ID']['output'];
   info?: Maybe<Info>;
   thumbnailURL: Scalars['String']['output'];
+}
+
+export interface Todo {
+  __typename?: 'Todo';
+  id: Scalars['ID']['output'];
+  title: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+}
+
+export interface TodoCreateInput {
+  title: Scalars['String']['input'];
+  userId: Scalars['ID']['input'];
+}
+
+export interface TodoUpdateInput {
+  title: Scalars['String']['input'];
+}
+
+export interface TodoWhereInput {
+  userId?: InputMaybe<Scalars['ID']['input']>;
 }
 
 export type AstronautFragment = { __typename?: 'Astronaut', id: string, name: string, surName: string, birth: any, skill: string, hair?: string | null, eyes?: string | null };
@@ -533,6 +584,44 @@ export type CharacterQueryVariables = Exact<{
 
 export type CharacterQuery = { __typename?: 'Query', character?: { __typename?: 'Character', id?: string | null, name?: string | null, birth_year?: string | null, eye_color?: string | null, skin_color?: string | null, gender?: string | null } | null };
 
+export type TodoFragment = { __typename?: 'Todo', id: string, title: string };
+
+export type TodoQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type TodoQuery = { __typename?: 'Query', todo?: { __typename?: 'Todo', id: string, title: string } | null };
+
+export type TodosQueryVariables = Exact<{
+  where?: InputMaybe<TodoWhereInput>;
+}>;
+
+
+export type TodosQuery = { __typename?: 'Query', todos?: Array<{ __typename?: 'Todo', id: string, title: string }> | null };
+
+export type CreateTodoMutationVariables = Exact<{
+  input: TodoCreateInput;
+}>;
+
+
+export type CreateTodoMutation = { __typename?: 'Mutation', createTodo: { __typename?: 'Todo', id: string, title: string } };
+
+export type UpdateTodoMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: TodoUpdateInput;
+}>;
+
+
+export type UpdateTodoMutation = { __typename?: 'Mutation', updateTodo: { __typename?: 'Todo', id: string, title: string } };
+
+export type DeleteTodoMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteTodoMutation = { __typename?: 'Mutation', deleteTodo: { __typename?: 'Todo', id: string, title: string } };
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -631,6 +720,10 @@ export type ResolversTypes = {
   SearchInput: SearchInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Thumbnail: ResolverTypeWrapper<Thumbnail>;
+  Todo: ResolverTypeWrapper<Todo>;
+  TodoCreateInput: TodoCreateInput;
+  TodoUpdateInput: TodoUpdateInput;
+  TodoWhereInput: TodoWhereInput;
   Upload: ResolverTypeWrapper<Scalars['Upload']['output']>;
 };
 
@@ -662,6 +755,10 @@ export type ResolversParentTypes = {
   SearchInput: SearchInput;
   String: Scalars['String']['output'];
   Thumbnail: Thumbnail;
+  Todo: Todo;
+  TodoCreateInput: TodoCreateInput;
+  TodoUpdateInput: TodoUpdateInput;
+  TodoWhereInput: TodoWhereInput;
   Upload: Scalars['Upload']['output'];
 };
 
@@ -767,13 +864,16 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationCreateAuthorArgs, 'input'>>;
   createBook?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<MutationCreateBookArgs, 'file' | 'input'>>;
   createEmployee?: Resolver<ResolversTypes['Employee'], ParentType, ContextType, RequireFields<MutationCreateEmployeeArgs, 'input'>>;
+  createTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationCreateTodoArgs, 'input'>>;
   deleteBook?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<MutationDeleteBookArgs, 'id'>>;
+  deleteTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationDeleteTodoArgs, 'id'>>;
   destroyAstronaut?: Resolver<ResolversTypes['Astronaut'], ParentType, ContextType, RequireFields<MutationDestroyAstronautArgs, 'id'>>;
   destroyEmployee?: Resolver<ResolversTypes['Employee'], ParentType, ContextType, RequireFields<MutationDestroyEmployeeArgs, 'id'>>;
   updateAstronaut?: Resolver<ResolversTypes['Astronaut'], ParentType, ContextType, RequireFields<MutationUpdateAstronautArgs, 'id' | 'input'>>;
   updateAuthor?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<MutationUpdateAuthorArgs, 'id' | 'input'>>;
   updateBook?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<MutationUpdateBookArgs, 'id' | 'input'>>;
   updateEmployee?: Resolver<ResolversTypes['Employee'], ParentType, ContextType, RequireFields<MutationUpdateEmployeeArgs, 'id' | 'input'>>;
+  updateTodo?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationUpdateTodoArgs, 'id' | 'input'>>;
 };
 
 export type PeopleOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['PeopleOutput'] = ResolversParentTypes['PeopleOutput']> = {
@@ -798,12 +898,21 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   filmsOutput?: Resolver<ResolversTypes['FilmsOutput'], ParentType, ContextType, Partial<QueryFilmsOutputArgs>>;
   people?: Resolver<ResolversTypes['PeopleOutput'], ParentType, ContextType, Partial<QueryPeopleArgs>>;
   thumbnails?: Resolver<Array<ResolversTypes['Thumbnail']>, ParentType, ContextType>;
+  todo?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<QueryTodoArgs, 'id'>>;
+  todos?: Resolver<Maybe<Array<ResolversTypes['Todo']>>, ParentType, ContextType, Partial<QueryTodosArgs>>;
 };
 
 export type ThumbnailResolvers<ContextType = any, ParentType extends ResolversParentTypes['Thumbnail'] = ResolversParentTypes['Thumbnail']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   info?: Resolver<Maybe<ResolversTypes['Info']>, ParentType, ContextType>;
   thumbnailURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TodoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Todo'] = ResolversParentTypes['Todo']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -827,6 +936,7 @@ export type Resolvers<ContextType = any> = {
   PeopleOutput?: PeopleOutputResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Thumbnail?: ThumbnailResolvers<ContextType>;
+  Todo?: TodoResolvers<ContextType>;
   Upload?: GraphQLScalarType;
 };
 

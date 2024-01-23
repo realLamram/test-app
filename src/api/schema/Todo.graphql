@@ -1,0 +1,34 @@
+fragment todo on Todo {
+  id
+  title
+}
+
+query Todo($id: ID!) {
+  todo(id: $id) {
+    ...todo
+  }
+}
+
+query Todos($where: TodoWhereInput) {
+  todos(where: $where) {
+    ...todo
+  }
+}
+
+mutation CreateTodo($input: TodoCreateInput!) {
+  createTodo(input: $input) {
+    ...todo
+  }
+}
+
+mutation UpdateTodo($id: ID!, $input: TodoUpdateInput!) {
+  updateTodo(id: $id, input: $input) {
+    ...todo
+  }
+}
+
+mutation DeleteTodo($id: ID!) {
+  deleteTodo(id: $id) {
+    ...todo
+  }
+}

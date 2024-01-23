@@ -29,16 +29,6 @@ export default function ValidationProvider({ children }: ValidationProviderProps
 
     const { isValid, errorPaths, errorMessages } = await yupValidation(schema, input);
 
-    if (isValid) {
-      setOpenToast(true);
-      setToastMessage(translate("successSave"));
-      setSeverity(Severity.Success);
-    } else {
-      setOpenToast(true);
-      setToastMessage(translate("errorSave"));
-      setSeverity(Severity.Error);
-    }
-
     errorPaths?.forEach((name: string, idx: number) => {
       newComponents = {
         ...newComponents,

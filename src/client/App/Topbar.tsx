@@ -3,8 +3,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import {
   AppBar,
   Avatar,
-  Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Divider,
   FormControlLabel,
   IconButton,
   Menu,
@@ -17,14 +20,19 @@ import {
   useTheme,
 } from "@mui/material";
 import { red } from "@mui/material/colors";
+import axios from "axios";
 import { ReactElement, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { url } from "../..";
 import { translate } from "../../i18n/utils";
-import { useUser } from "../context";
+import { useUser as useTestUser } from "../context";
+import { UserRole } from "../utils";
+import { useToast } from "../validation";
+import { Severity } from "../validation/ToastContext";
 import { Resource } from "./Router/utils";
 import SidebarToggle from "./Sidebar/SidebarToggle";
+import { UserAvatar, useLogin, useUser } from "./User";
 import useBreakPoints from "./hooks/useBreakPoints";
-import { UserRole } from "../utils";
 
 type LinksProps = {
   text: string;
@@ -37,10 +45,15 @@ const links = [
 ];
 
 export default function TopBar(): ReactElement {
+  const login = useLogin();
+  const { setUser } = useUser();
+  const { picture } = useUser();
   const { pathname } = useLocation();
   const theme = useTheme();
   const { downMD } = useBreakPoints();
-  const { userRole, setUserRole } = useUser();
+  const { userRole, setUserRole } = useTestUser();
+  const { setToastMessage, setSeverity, setOpenToast } = useToast();
+  const [open, setOpen] = useState<boolean>(false);
 
   const getBGColor = (path: string): string => {
     if (pathname === "/" && path === "/") {
@@ -64,8 +77,43 @@ export default function TopBar(): ReactElement {
     setAnchorElUser(null);
   };
 
+  const onSubmit = async () => {
+    const logout = await axios(`/logout`, {
+      withCredentials: true,
+    });
+    setUser({});
+
+    if (logout.statusText === "OK") {
+      setToastMessage(translate("logout_successful"));
+      setSeverity(Severity.Success);
+      setOpenToast(true);
+    } else {
+      setToastMessage(translate("logout_failed"));
+      setSeverity(Severity.Error);
+      setOpenToast(true);
+    }
+    setOpen(false);
+  };
+
   return (
     <AppBar>
+      <Dialog onClose={() => setOpen(false)} open={open}>
+        <DialogTitle variant="h5">Logout</DialogTitle>
+        <Divider sx={{ width: "90%", mx: "auto" }} />
+        <Typography sx={{ p: 3 }}>{translate("logout_confirm")}</Typography>
+        <DialogActions>
+          <Button
+            onClick={(e) => {
+              setOpen(false);
+            }}
+            color="inherit"
+          >
+            {translate("cancel")}
+          </Button>
+          <Button onClick={onSubmit}>{translate("confirm")}</Button>
+        </DialogActions>
+      </Dialog>
+
       <Toolbar
         sx={{
           justifyContent: "space-between",
@@ -96,7 +144,14 @@ export default function TopBar(): ReactElement {
           ))}
         </Stack>
 
-        <Box sx={{ flexGrow: 0 }}>
+        <Stack sx={{ flexGrow: 0 }} spacing={1} direction="row">
+          <IconButton sx={{ p: 0 }} onClick={() => (picture ? setOpen(true) : login())}>
+            {!picture ? (
+              <img src={`${url}/google_icon_256.png`} alt="Google Sign in" width={55} />
+            ) : (
+              <UserAvatar />
+            )}
+          </IconButton>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar sx={{ backgroundColor: userRole === UserRole.ADMIN ? red[500] : "" }}>
@@ -132,7 +187,7 @@ export default function TopBar(): ReactElement {
               />
             </MenuItem>
           </Menu>
-        </Box>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

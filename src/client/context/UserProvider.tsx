@@ -4,7 +4,7 @@ import UserContext from "./UserContext";
 
 export type UserProviderProps = PropsWithChildren<any>;
 
-export default function UserProvider({ children }: UserProviderProps): ReactElement {
+export function UserProvider({ children }: UserProviderProps): ReactElement {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const view = localStorage.getItem("view");
   const [customerView, setCustomerView] = useState<boolean>(view === "customer" ? true : false);

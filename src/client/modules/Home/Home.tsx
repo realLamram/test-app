@@ -4,6 +4,7 @@ import { ReactElement } from "react";
 
 export default function Home(): ReactElement {
   const style = { backgroundColor: yellow[50], width: "fit-content" };
+
   return (
     <Card
       sx={{

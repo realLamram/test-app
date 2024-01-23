@@ -7,6 +7,7 @@ import type PrismaTypes from "./generated";
 import { DateResolver } from "graphql-scalars";
 import { FileUpload, GraphQLUpload } from "graphql-upload-minimal";
 import { GraphQLScalarType, Kind } from "graphql";
+import { User, UserRole } from "@prisma/client";
 
 // export type Context = {
 //   db: PrismaClient;

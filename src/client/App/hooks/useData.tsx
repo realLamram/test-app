@@ -14,7 +14,12 @@ export default function useData<TData = Data>(props: {
   pause?: boolean;
 }) {
   const { doc, variables, pause } = props;
-  const [{ data, error, fetching }] = urqlUseQuery({ query: doc, variables, pause });
+
+  const [{ data, error, fetching }] = urqlUseQuery({
+    query: doc,
+    variables,
+    pause,
+  });
 
   return { error, data, fetching };
 }

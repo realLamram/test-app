@@ -9,3 +9,4 @@ import "./Entry";
 import "./Film";
 import "./Gallery";
 import "./Swapi";
+import "./Todo";

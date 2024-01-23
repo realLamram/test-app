@@ -19,6 +19,7 @@
     "start_searching": "Začněte vyhledávat...",
     "unknown": "Neuvedeno",
     "not": "Není",
+    "add": "Přidat",
 
     "cancel": "Zrušit",
     "confirm": "Potvrdit",
@@ -55,6 +56,7 @@
     "searchBook": "Hledat knihu...",
     "searchAuthor": "Hledat autora...",
     "successDelete": "Úspěšně smazáno.",
+    "errorDelete": "Chyba při mazání!",
 
     "year": "Rok",
     "films": "Filmy",
@@ -72,6 +74,12 @@
     "gender": "Pohlaví",
     "birth_year": "Rok narození",
     "eye_color": "Barva očí",
-    "skin_color": "Barva pleti"
+    "skin_color": "Barva pleti",
+
+    "logout_successful":"Odhlášení proběhlo úspěšně.",
+    "login_successful":"Přihlášení proběhlo úspěšně.",
+    "login_failed":"Přihlášení se nezdařilo.",
+    "logout_failed":"Odhlášení se nezdařilo.",
+    "logout_confirm":"Opravdu se chcete odhlásit?"
 
 }

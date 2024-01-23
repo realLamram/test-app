@@ -4,6 +4,7 @@ import Employees from "./Employees";
 import Films from "./Films";
 import Gallery from "./Gallery";
 import Home from "./Home";
+import Login from "./Login";
 import Swapi from "./Swapi";
 
 const modules: { [key: string]: any } = {
@@ -14,6 +15,7 @@ const modules: { [key: string]: any } = {
   films: Films,
   gallery: Gallery,
   swapi: Swapi,
+  login: Login,
 };
 
 export default modules;

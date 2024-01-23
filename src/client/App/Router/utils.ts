@@ -14,4 +14,5 @@ export enum Resource {
   FILMS = "films",
   GALLERY = "gallery",
   SWAPI = "swapi",
+  LOGIN = "login",
 }
