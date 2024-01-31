@@ -1,0 +1,21 @@
+fragment user on User {
+  id
+  name
+  surName
+  fullName
+  email
+}
+
+query Users($search: String) {
+  users(search: $search) {
+    ...user
+    roles
+  }
+}
+
+mutation UserRoleUpdate($input: UserRoleInput!) {
+  userRoleUpdate(input: $input) {
+    ...user
+    roles
+  }
+}

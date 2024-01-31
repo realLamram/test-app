@@ -1,41 +1,11 @@
 import { clientPrisma } from "../../prisma";
 import { todoCreate, todoUpdate } from "../../validation/schema/Todos";
-import { checkAuthToken, checkUser, refreshToken } from "../authorization";
+import { checkAuthToken } from "../authorization";
 import { builder } from "../builder";
+import { checkAuth } from "../utils";
 import yupValidation from "../yupValidation";
 
-const checkAuth = async (context: any) => {
-  const { headers } = context.req;
-
-  try {
-    if (!headers.authorization) {
-      throw new Error("No auth header");
-    }
-    const at = headers.authorization.split(" ")[1];
-
-    if (!at) {
-      throw new Error("No auth token");
-    }
-
-    const userEmail = await checkUser(at);
-
-    const user = await clientPrisma.user.findUnique({
-      where: {
-        email: userEmail,
-      },
-      include: {
-        roles: true,
-      },
-    });
-
-    if (!user?.email) {
-      throw new Error("No user email found!");
-    }
-  } catch (err) {
-    console.error("Chyba při ověřování:", (err as Error).message);
-    throw new Error("Unauthorized");
-  }
-};
+// Toto je Login module, v kterém se vytvářejí todo úkoly
 
 export const Todo = builder.prismaObject("Todo", {
   fields: (t) => ({

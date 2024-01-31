@@ -12,7 +12,7 @@ const oAuth2Client = new OAuth2Client({
   redirectUri: REDIRECT_URI,
 });
 
-export const checkUser = async (accessToken: string) => {
+export const checkUser = async (accessToken: string): Promise<false | string> => {
   try {
     const response = await axios.get(
       `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${accessToken}`

@@ -23,6 +23,7 @@ import { Link } from "../../ui/Link";
 
 const Item = (props: { id: string; title: string }) => {
   const { id, title } = props;
+  const { can } = useUser();
   const { execDelete } = useMutation(DeleteTodoDocument);
 
   return (
@@ -34,9 +35,11 @@ const Item = (props: { id: string; title: string }) => {
             <EditIcon />
           </IconButton>
         </Link>
-        <IconButton onClick={() => execDelete({ id })}>
-          <ClearIcon />
-        </IconButton>
+        {can([UserRole.ADMIN]) && (
+          <IconButton onClick={() => execDelete({ id })}>
+            <ClearIcon />
+          </IconButton>
+        )}
       </Stack>
     </ListItem>
   );
@@ -59,9 +62,16 @@ export default function Login(): ReactElement {
       <CardHeader
         title={`Login module - user ${user.fullName}`}
         action={
-          <Link url="create">
-            <ResponsiveButton icon={<AddIcon />}>{translate("add")}</ResponsiveButton>
-          </Link>
+          <Stack direction="row" spacing={2}>
+            {can([UserRole.ADMIN]) && (
+              <Link url="changeuserrole">
+                <ResponsiveButton icon={<AddIcon />}>{translate("role")}</ResponsiveButton>
+              </Link>
+            )}
+            <Link url="create">
+              <ResponsiveButton icon={<AddIcon />}>{translate("add")}</ResponsiveButton>
+            </Link>
+          </Stack>
         }
       />
       <CardContent>

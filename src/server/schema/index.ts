@@ -10,3 +10,5 @@ import "./Film";
 import "./Gallery";
 import "./Swapi";
 import "./Todo";
+import "./User";
+import "./Role";

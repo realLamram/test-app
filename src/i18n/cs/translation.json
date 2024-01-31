@@ -1,5 +1,7 @@
 {
     "Modules": "Moduly",
+    "admin": "Administrátor",
+    "user": "Uživatel", 
 
     "create": "Vytvořit",
     "delete": "Odstranit",
@@ -80,6 +82,7 @@
     "login_successful":"Přihlášení proběhlo úspěšně.",
     "login_failed":"Přihlášení se nezdařilo.",
     "logout_failed":"Odhlášení se nezdařilo.",
-    "logout_confirm":"Opravdu se chcete odhlásit?"
+    "logout_confirm":"Opravdu se chcete odhlásit?",
+    "changeUserRole": "Změnit roli"
 
 }
